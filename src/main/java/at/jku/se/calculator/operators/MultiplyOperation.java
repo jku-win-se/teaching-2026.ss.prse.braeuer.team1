@@ -5,13 +5,6 @@ import org.apache.logging.log4j.Logger;
 
 import at.jku.se.calculator.factory.ICalculationOperation;
 
-/**
- * {@link ICalculationOperation} that multiplies two integer operands.
- *
- * Expects an input string of the form {@code "a*b"} where both {@code a}
- * and {@code b} are valid integers. Throws {@link IllegalArgumentException}
- * if the input is malformed.
- */
 public class MultiplyOperation implements ICalculationOperation {
 
     private static final Logger LOGGER = LogManager.getLogger(MultiplyOperation.class);
