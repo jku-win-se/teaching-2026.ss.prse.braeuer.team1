@@ -36,7 +36,7 @@ public class OperationFactory {
 		case ADD:
 			return new AddOperation();
 		case DIV:
-			return new NullOperation();
+			return new DivOperation();
 		case MULT:
 			return new NullOperation();
 		case SUB:
