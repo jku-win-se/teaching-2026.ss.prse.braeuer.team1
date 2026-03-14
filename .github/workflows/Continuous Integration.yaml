@@ -11,6 +11,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    # Setzt das Arbeitsverzeichnis für alle 'run' Befehle auf den backend-Ordner
+    defaults:
+      run:
+        working-directory: backend
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,7 +25,7 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-          architecture: x64
+          cache: 'maven' # Optimiert die Geschwindigkeit durch Caching
 
       - name: Compile
         run: mvn compile -q
@@ -32,24 +37,25 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
-          files: target/surefire-reports/*.xml
+          # Pfad muss den Unterordner enthalten
+          files: backend/target/surefire-reports/*.xml
 
       - name: Upload JaCoCo coverage report
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: jacoco-report
-          path: target/site/jacoco/
+          path: backend/target/site/jacoco/
 
       - name: PMD static analysis
-        run: mvn pmd:pmd pmd:cpd -q
+        run: mvn pmd:check pmd:cpd-check -q
 
       - name: Upload PMD report
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: pmd-report
-          path: target/pmd.xml
+          path: backend/target/pmd.xml
 
       - name: Package
         run: mvn package -DskipTests -q
@@ -57,6 +63,5 @@ jobs:
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
-          name: calculator-jar
-          path: target/*.jar
-
+          name: backend-jar
+          path: backend/target/*.jar
