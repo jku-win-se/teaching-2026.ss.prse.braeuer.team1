@@ -1,2 +1,62 @@
-# Ignore target folder containing build artifacts
-/target/
+# =========================
+# IDEs
+# =========================
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Java / Maven
+# =========================
+target/
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
+.mvn/wrapper/maven-wrapper.jar
+
+# logs
+*.log
+
+# =========================
+# Node / React
+# =========================
+node_modules/
+dist/
+build/
+coverage/
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# =========================
+# Testing / coverage
+# =========================
+coverage/
+*.lcov
+
+# =========================
+# temporary files
+# =========================
+tmp/
+temp/
+*.tmp
+*.swp
