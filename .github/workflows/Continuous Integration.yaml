@@ -59,9 +59,11 @@ jobs:
 
       - name: Package
         run: mvn package -DskipTests -q
-
-      - name: Upload JAR artifact
+        
+      - name: Upload Quarkus App
         uses: actions/upload-artifact@v4
         with:
-          name: backend-jar
-          path: backend/target/*.jar
+          name: backend-quarkus-app
+          # Quarkus legt die lauffähige App in diesen Unterordner
+          path: backend/target/quarkus-app/
+          
