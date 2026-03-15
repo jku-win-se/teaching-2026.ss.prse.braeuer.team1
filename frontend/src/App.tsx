@@ -21,7 +21,7 @@ function App() {
       if (!response.ok) throw new Error(`HTTP ${response.status}`)
       const text = await response.text()
       setGreeting(text)
-    } catch (e) {
+    } catch {
       setError(
         'Backend nicht erreichbar. Starte das Quarkus-Backend auf Port 8080.'
       )
