@@ -6,6 +6,7 @@
 *.iws
 *.ipr
 .vscode/
+.claude/
 
 # =========================
 # OS files
