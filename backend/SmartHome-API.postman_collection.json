@@ -1,0 +1,909 @@
+{
+  "info": {
+    "_postman_id": "smarthome-quarkus-api-collection",
+    "name": "SmartHome API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl",        "value": "http://localhost:8080", "type": "string" },
+    { "key": "userId",         "value": "1",  "type": "string" },
+    { "key": "ownerId",        "value": "1",  "type": "string" },
+    { "key": "memberId",       "value": "2",  "type": "string" },
+    { "key": "roomId",         "value": "1",  "type": "string" },
+    { "key": "deviceId",       "value": "1",  "type": "string" },
+    { "key": "scheduleId",     "value": "1",  "type": "string" },
+    { "key": "ruleId",         "value": "1",  "type": "string" },
+    { "key": "notificationId", "value": "1",  "type": "string" },
+    { "key": "sceneId",        "value": "1",  "type": "string" },
+    { "key": "vacationModeId", "value": "1",  "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Greeting",
+      "item": [
+        {
+          "name": "Hello",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/hello",
+              "host": ["{{baseUrl}}"],
+              "path": ["hello"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "List All Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users"]
+            }
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"owner@smarthome.at\",\n  \"password\": \"secret123\",\n  \"role\": \"OWNER\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"owner@smarthome.at\",\n  \"password\": \"secret123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "login"]
+            }
+          }
+        },
+        {
+          "name": "Invite Member",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"member@smarthome.at\",\n  \"temporaryPassword\": \"temp456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{ownerId}}/invite",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "{{ownerId}}", "invite"]
+            }
+          }
+        },
+        {
+          "name": "Revoke Member Access",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{memberId}}/revoke",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "{{memberId}}", "revoke"]
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "{{userId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Rooms",
+      "item": [
+        {
+          "name": "List All Rooms",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/rooms",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rooms"]
+            }
+          }
+        },
+        {
+          "name": "List Rooms by User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/rooms?userId={{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rooms"],
+              "query": [
+                { "key": "userId", "value": "{{userId}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Room by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/rooms/{{roomId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rooms", "{{roomId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Room",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Living Room\",\n  \"userId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/rooms",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rooms"]
+            }
+          }
+        },
+        {
+          "name": "Rename Room",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Master Bedroom\",\n  \"userId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/rooms/{{roomId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rooms", "{{roomId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Room",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/rooms/{{roomId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rooms", "{{roomId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Devices",
+      "item": [
+        {
+          "name": "List Devices in Room",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/rooms/{{roomId}}/devices",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rooms", "{{roomId}}", "devices"]
+            }
+          }
+        },
+        {
+          "name": "Create Device in Room",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ceiling Light\",\n  \"type\": \"DIMMER\",\n  \"powerConsumptionWatt\": 60.0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/rooms/{{roomId}}/devices",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rooms", "{{roomId}}", "devices"]
+            }
+          }
+        },
+        {
+          "name": "Get Device by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/devices/{{deviceId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "devices", "{{deviceId}}"]
+            }
+          }
+        },
+        {
+          "name": "Rename Device",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Floor Lamp\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/devices/{{deviceId}}/rename",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "devices", "{{deviceId}}", "rename"]
+            }
+          }
+        },
+        {
+          "name": "Update Device State",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"switchedOn\": true,\n  \"level\": 75.0,\n  \"actor\": \"owner@smarthome.at\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/devices/{{deviceId}}/state",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "devices", "{{deviceId}}", "state"]
+            }
+          }
+        },
+        {
+          "name": "Delete Device",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/devices/{{deviceId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "devices", "{{deviceId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Activity Logs",
+      "item": [
+        {
+          "name": "Get Activity Logs (all)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/activity-logs",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "activity-logs"]
+            }
+          }
+        },
+        {
+          "name": "Get Activity Logs by Device",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/activity-logs?deviceId={{deviceId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "activity-logs"],
+              "query": [
+                { "key": "deviceId", "value": "{{deviceId}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Activity Logs by User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/activity-logs?userId={{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "activity-logs"],
+              "query": [
+                { "key": "userId", "value": "{{userId}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Export Activity Logs as CSV",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/activity-logs/export?userId={{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "activity-logs", "export"],
+              "query": [
+                { "key": "userId", "value": "{{userId}}" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Energy",
+      "item": [
+        {
+          "name": "Get Energy Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/energy/dashboard?userId={{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "energy", "dashboard"],
+              "query": [
+                { "key": "userId", "value": "{{userId}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Export Energy Data as CSV",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/energy/export?userId={{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "energy", "export"],
+              "query": [
+                { "key": "userId", "value": "{{userId}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Add Energy Log",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"deviceId\": 1,\n  \"timestamp\": \"2026-03-21T10:00:00\",\n  \"consumptionWh\": 120.5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/energy/logs",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "energy", "logs"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Schedules",
+      "item": [
+        {
+          "name": "List All Schedules",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/schedules",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "schedules"]
+            }
+          }
+        },
+        {
+          "name": "List Schedules by User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/schedules?userId={{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "schedules"],
+              "query": [
+                { "key": "userId", "value": "{{userId}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Schedule by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/schedules/{{scheduleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "schedules", "{{scheduleId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Schedule",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Morning Lights On\",\n  \"cronExpression\": \"0 7 * * *\",\n  \"deviceId\": 1,\n  \"actionValue\": \"ON\",\n  \"active\": true,\n  \"userId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/schedules",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "schedules"]
+            }
+          }
+        },
+        {
+          "name": "Update Schedule",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Evening Lights Off\",\n  \"cronExpression\": \"0 22 * * *\",\n  \"deviceId\": 1,\n  \"actionValue\": \"OFF\",\n  \"active\": true,\n  \"userId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/schedules/{{scheduleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "schedules", "{{scheduleId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Schedule",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/schedules/{{scheduleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "schedules", "{{scheduleId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Rules",
+      "item": [
+        {
+          "name": "List All Rules",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/rules",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rules"]
+            }
+          }
+        },
+        {
+          "name": "List Rules by User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/rules?userId={{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rules"],
+              "query": [
+                { "key": "userId", "value": "{{userId}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Rule by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/rules/{{ruleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rules", "{{ruleId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Rule (Threshold)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Turn on heater if temperature drops\",\n  \"triggerType\": \"THRESHOLD\",\n  \"triggerCondition\": \"level < 18\",\n  \"triggerDeviceId\": 2,\n  \"triggerThresholdValue\": 18.0,\n  \"actionDeviceId\": 3,\n  \"actionValue\": \"ON\",\n  \"active\": true,\n  \"userId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/rules",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rules"]
+            }
+          }
+        },
+        {
+          "name": "Create Rule (Time-based)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Turn off lights at midnight\",\n  \"triggerType\": \"TIME_BASED\",\n  \"triggerCondition\": \"0 0 * * *\",\n  \"triggerDeviceId\": null,\n  \"triggerThresholdValue\": null,\n  \"actionDeviceId\": 1,\n  \"actionValue\": \"OFF\",\n  \"active\": true,\n  \"userId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/rules",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rules"]
+            }
+          }
+        },
+        {
+          "name": "Update Rule",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Turn on heater if temperature drops below 20\",\n  \"triggerType\": \"THRESHOLD\",\n  \"triggerCondition\": \"level < 20\",\n  \"triggerDeviceId\": 2,\n  \"triggerThresholdValue\": 20.0,\n  \"actionDeviceId\": 3,\n  \"actionValue\": \"ON\",\n  \"active\": true,\n  \"userId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/rules/{{ruleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rules", "{{ruleId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Rule",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/rules/{{ruleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rules", "{{ruleId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "List Notifications by User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/notifications?userId={{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notifications"],
+              "query": [
+                { "key": "userId", "value": "{{userId}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Unread Notifications by User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/notifications?userId={{userId}}&unreadOnly=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notifications"],
+              "query": [
+                { "key": "userId",     "value": "{{userId}}" },
+                { "key": "unreadOnly", "value": "true" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mark Notification as Read",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/notifications/{{notificationId}}/read",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notifications", "{{notificationId}}", "read"]
+            }
+          }
+        },
+        {
+          "name": "Mark All Notifications as Read",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/notifications/read-all?userId={{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notifications", "read-all"],
+              "query": [
+                { "key": "userId", "value": "{{userId}}" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Scenes",
+      "item": [
+        {
+          "name": "List All Scenes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/scenes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "scenes"]
+            }
+          }
+        },
+        {
+          "name": "List Scenes by User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/scenes?userId={{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "scenes"],
+              "query": [
+                { "key": "userId", "value": "{{userId}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Scene by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/scenes/{{sceneId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "scenes", "{{sceneId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Scene",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Movie Night\",\n  \"userId\": 1,\n  \"deviceStates\": [\n    {\n      \"deviceId\": 1,\n      \"targetSwitchedOn\": true,\n      \"targetLevel\": 20.0\n    },\n    {\n      \"deviceId\": 2,\n      \"targetSwitchedOn\": false,\n      \"targetLevel\": null\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/scenes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "scenes"]
+            }
+          }
+        },
+        {
+          "name": "Update Scene",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Movie Night (Updated)\",\n  \"userId\": 1,\n  \"deviceStates\": [\n    {\n      \"deviceId\": 1,\n      \"targetSwitchedOn\": true,\n      \"targetLevel\": 15.0\n    },\n    {\n      \"deviceId\": 2,\n      \"targetSwitchedOn\": true,\n      \"targetLevel\": 50.0\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/scenes/{{sceneId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "scenes", "{{sceneId}}"]
+            }
+          }
+        },
+        {
+          "name": "Activate Scene",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/scenes/{{sceneId}}/activate",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "scenes", "{{sceneId}}", "activate"]
+            }
+          }
+        },
+        {
+          "name": "Delete Scene",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/scenes/{{sceneId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "scenes", "{{sceneId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vacation Modes",
+      "item": [
+        {
+          "name": "List All Vacation Modes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/vacation-modes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vacation-modes"]
+            }
+          }
+        },
+        {
+          "name": "List Vacation Modes by User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/vacation-modes?userId={{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vacation-modes"],
+              "query": [
+                { "key": "userId", "value": "{{userId}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Vacation Mode by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/vacation-modes/{{vacationModeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vacation-modes", "{{vacationModeId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Vacation Mode",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"startDate\": \"2026-07-01\",\n  \"endDate\": \"2026-07-14\",\n  \"scheduleId\": 1,\n  \"active\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/vacation-modes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vacation-modes"]
+            }
+          }
+        },
+        {
+          "name": "Update Vacation Mode",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"startDate\": \"2026-07-05\",\n  \"endDate\": \"2026-07-20\",\n  \"scheduleId\": 1,\n  \"active\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/vacation-modes/{{vacationModeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vacation-modes", "{{vacationModeId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Vacation Mode",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/vacation-modes/{{vacationModeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vacation-modes", "{{vacationModeId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -50,7 +50,6 @@ public class StartupDataLoader {
 
         // ── Users ──────────────────────────────────────────────────────────────
         User alice = createUser("alice@example.com", TEST_PASSWORD, UserRole.OWNER);
-        User bob = createUser("bob@example.com", TEST_PASSWORD, UserRole.MEMBER);
 
         // ── Rooms ──────────────────────────────────────────────────────────────
         Room livingRoom = createRoom("Living Room", alice);

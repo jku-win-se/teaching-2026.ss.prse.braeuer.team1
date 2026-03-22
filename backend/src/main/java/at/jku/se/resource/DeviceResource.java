@@ -2,7 +2,6 @@ package at.jku.se.resource;
 
 import at.jku.se.dto.request.DeviceRenameRequest;
 import at.jku.se.dto.request.DeviceStateRequest;
-import at.jku.se.dto.response.DeviceResponse;
 import at.jku.se.entity.ActivityLog;
 import at.jku.se.entity.Device;
 import at.jku.se.mapper.DeviceMapper;
