@@ -119,21 +119,9 @@ public class SceneResource {
         Scene scene = new Scene();
         scene.name = request.name;
         scene.user = user;
-        if (request.deviceStates != null) {
-            for (var stateReq : request.deviceStates) {
-                Device device = deviceRepo.findById(stateReq.deviceId);
-                if (device == null) {
-                    return Response.status(Response.Status.NOT_FOUND)
-                            .entity(Map.of("error", "Device " + stateReq.deviceId + " not found"))
-                            .build();
-                }
-                SceneDeviceState state = new SceneDeviceState();
-                state.scene = scene;
-                state.device = device;
-                state.targetSwitchedOn = stateReq.targetSwitchedOn;
-                state.targetLevel = stateReq.targetLevel;
-                scene.deviceStates.add(state);
-            }
+        Response error = applyDeviceStates(scene, request);
+        if (error != null) {
+            return error;
         }
         sceneRepo.persist(scene);
         return Response.created(URI.create("/api/scenes/" + scene.id))
@@ -158,21 +146,9 @@ public class SceneResource {
         }
         scene.name = request.name;
         scene.deviceStates.clear();
-        if (request.deviceStates != null) {
-            for (var stateReq : request.deviceStates) {
-                Device device = deviceRepo.findById(stateReq.deviceId);
-                if (device == null) {
-                    return Response.status(Response.Status.NOT_FOUND)
-                            .entity(Map.of("error", "Device " + stateReq.deviceId + " not found"))
-                            .build();
-                }
-                SceneDeviceState state = new SceneDeviceState();
-                state.scene = scene;
-                state.device = device;
-                state.targetSwitchedOn = stateReq.targetSwitchedOn;
-                state.targetLevel = stateReq.targetLevel;
-                scene.deviceStates.add(state);
-            }
+        Response error = applyDeviceStates(scene, request);
+        if (error != null) {
+            return error;
         }
         return Response.ok(SceneMapper.toResponse(scene)).build();
     }
@@ -246,5 +222,32 @@ public class SceneResource {
         return Response.ok(Map.of(
                 "message", "Scene '" + scene.name + "' activated successfully",
                 "devicesChanged", devicesChanged)).build();
+    }
+
+    /**
+     * Builds SceneDeviceState entries from the request and adds them to the scene.
+     *
+     * @param scene   the scene to populate
+     * @param request the incoming request containing device states
+     * @return an error Response if a device is not found, or null on success
+     */
+    private Response applyDeviceStates(Scene scene, SceneRequest request) {
+        if (request.deviceStates != null) {
+            for (var stateReq : request.deviceStates) {
+                Device device = deviceRepo.findById(stateReq.deviceId);
+                if (device == null) {
+                    return Response.status(Response.Status.NOT_FOUND)
+                            .entity(Map.of("error", "Device " + stateReq.deviceId + " not found"))
+                            .build();
+                }
+                SceneDeviceState state = new SceneDeviceState();
+                state.scene = scene;
+                state.device = device;
+                state.targetSwitchedOn = stateReq.targetSwitchedOn;
+                state.targetLevel = stateReq.targetLevel;
+                scene.deviceStates.add(state);
+            }
+        }
+        return null;
     }
 }
