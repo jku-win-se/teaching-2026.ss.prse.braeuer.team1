@@ -6,7 +6,7 @@ import type { User } from "@/types/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -66,14 +66,14 @@ export default function LoginPage() {
               />
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col gap-2">
+          <CardContent className="flex flex-col gap-3 pt-2">
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Wird angemeldet..." : "Anmelden"}
             </Button>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-center text-sm text-muted-foreground">
               Noch kein Konto? <Link to="/register" className="underline">Registrieren</Link>
             </p>
-          </CardFooter>
+          </CardContent>
         </form>
       </Card>
     </div>
