@@ -104,19 +104,13 @@ public class RuleResource {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(Map.of("error", "User not found")).build();
         }
-        Device actionDevice = deviceRepo.findById(request.actionDeviceId);
-        if (actionDevice == null) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity(Map.of("error", "Action device not found")).build();
+        Object resolved = resolveDevices(request);
+        if (resolved instanceof Response errorResponse) {
+            return errorResponse;
         }
-        Device triggerDevice = null;
-        if (request.triggerDeviceId != null) {
-            triggerDevice = deviceRepo.findById(request.triggerDeviceId);
-            if (triggerDevice == null) {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .entity(Map.of("error", "Trigger device not found")).build();
-            }
-        }
+        ResolvedDevices devices = (ResolvedDevices) resolved;
+        Device actionDevice = devices.actionDevice;
+        Device triggerDevice = devices.triggerDevice;
         Rule rule = new Rule();
         rule.name = request.name;
         rule.triggerType = request.triggerType;
@@ -148,19 +142,13 @@ public class RuleResource {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(Map.of("error", "Rule not found")).build();
         }
-        Device actionDevice = deviceRepo.findById(request.actionDeviceId);
-        if (actionDevice == null) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity(Map.of("error", "Action device not found")).build();
+        Object resolved = resolveDevices(request);
+        if (resolved instanceof Response errorResponse) {
+            return errorResponse;
         }
-        Device triggerDevice = null;
-        if (request.triggerDeviceId != null) {
-            triggerDevice = deviceRepo.findById(request.triggerDeviceId);
-            if (triggerDevice == null) {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .entity(Map.of("error", "Trigger device not found")).build();
-            }
-        }
+        ResolvedDevices devices = (ResolvedDevices) resolved;
+        Device actionDevice = devices.actionDevice;
+        Device triggerDevice = devices.triggerDevice;
         rule.name = request.name;
         rule.triggerType = request.triggerType;
         rule.triggerCondition = request.triggerCondition;
@@ -189,5 +177,30 @@ public class RuleResource {
         }
         ruleRepo.delete(rule);
         return Response.noContent().build();
+    }
+
+    private record ResolvedDevices(Device actionDevice, Device triggerDevice) { }
+
+    /**
+     * Resolves action and trigger devices from the request.
+     *
+     * @param request the rule request
+     * @return a ResolvedDevices on success, or a Response with 404 on failure
+     */
+    private Object resolveDevices(RuleRequest request) {
+        Device actionDevice = deviceRepo.findById(request.actionDeviceId);
+        if (actionDevice == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(Map.of("error", "Action device not found")).build();
+        }
+        Device triggerDevice = null;
+        if (request.triggerDeviceId != null) {
+            triggerDevice = deviceRepo.findById(request.triggerDeviceId);
+            if (triggerDevice == null) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity(Map.of("error", "Trigger device not found")).build();
+            }
+        }
+        return new ResolvedDevices(actionDevice, triggerDevice);
     }
 }
