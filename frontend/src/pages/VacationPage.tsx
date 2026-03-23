@@ -40,8 +40,9 @@ import {
   CalendarDays,
   Plane,
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import api from "@/lib/api";
+import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
+import { api } from "@/services/api";
 
 interface VacationMode {
   id: number;
@@ -64,9 +65,10 @@ export default function VacationPage() {
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
-  const { toast } = useToast();
+  // toast from sonner
 
-  const userId = localStorage.getItem("userId");
+  const { user } = useAuth();
+  const userId = user?.id;
 
   const [form, setForm] = useState({
     startDate: "",
@@ -76,18 +78,18 @@ export default function VacationPage() {
   });
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (userId) loadData();
+  }, [userId]);
 
   async function loadData() {
     setLoading(true);
     try {
       const [vacRes, schedRes] = await Promise.all([
-        api.get(`/api/vacation-modes?userId=${userId}`),
-        api.get("/api/schedules"),
+        api.get(`/vacation-modes?userId=${userId}`),
+        api.get("/schedules"),
       ]);
-      setVacations(vacRes.data as VacationMode[]);
-      setSchedules(schedRes.data as Schedule[]);
+      setVacations(vacRes as VacationMode[]);
+      setSchedules(schedRes as Schedule[]);
     } catch {
       /* empty */
     } finally {
@@ -114,11 +116,11 @@ export default function VacationPage() {
 
   async function handleSave() {
     if (!form.startDate || !form.endDate || !form.scheduleId) {
-      toast({ title: "Fehler", description: "Bitte alle Felder ausfüllen.", variant: "destructive" });
+      toast.error("Bitte alle Felder ausfüllen.");
       return;
     }
     if (form.endDate < form.startDate) {
-      toast({ title: "Fehler", description: "Enddatum muss nach Startdatum liegen.", variant: "destructive" });
+      toast.error("Enddatum muss nach Startdatum liegen.");
       return;
     }
     const body = {
@@ -130,26 +132,26 @@ export default function VacationPage() {
     };
     try {
       if (editId) {
-        await api.put(`/api/vacation-modes/${editId}`, body);
-        toast({ title: "Urlaubsmodus aktualisiert" });
+        await api.put(`/vacation-modes/${editId}`, body);
+        toast.success("Urlaubsmodus aktualisiert");
       } else {
-        await api.post("/api/vacation-modes", body);
-        toast({ title: "Urlaubsmodus erstellt" });
+        await api.post("/vacation-modes", body);
+        toast.success("Urlaubsmodus erstellt");
       }
       setDialogOpen(false);
       loadData();
     } catch {
-      toast({ title: "Fehler", description: "Speichern fehlgeschlagen.", variant: "destructive" });
+      toast.error("Speichern fehlgeschlagen.");
     }
   }
 
   async function handleDelete(id: number) {
     try {
-      await api.delete(`/api/vacation-modes/${id}`);
-      toast({ title: "Urlaubsmodus gelöscht" });
+      await api.delete(`/vacation-modes/${id}`);
+      toast.success("Urlaubsmodus gelöscht");
       loadData();
     } catch {
-      toast({ title: "Fehler", description: "Löschen fehlgeschlagen.", variant: "destructive" });
+      toast.error("Löschen fehlgeschlagen.");
     }
   }
 

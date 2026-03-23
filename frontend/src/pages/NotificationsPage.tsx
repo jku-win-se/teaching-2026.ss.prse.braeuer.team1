@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Bell, BellOff, CheckCheck, Mail, MailOpen, Clock } from "lucide-react";
-import api from "@/lib/api";
+import { useAuth } from "@/contexts/AuthContext";
+import { api } from "@/services/api";
 
 interface Notification {
   id: number;
@@ -19,18 +20,19 @@ export default function NotificationsPage() {
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState("all");
 
-  const userId = localStorage.getItem("userId");
+  const { user } = useAuth();
+  const userId = user?.id;
 
   useEffect(() => {
-    loadNotifications();
-  }, []);
+    if (userId) loadNotifications();
+  }, [userId]);
 
   async function loadNotifications() {
     if (!userId) return;
     setLoading(true);
     try {
-      const res = await api.get(`/api/notifications?userId=${userId}`);
-      const sorted = (res.data as Notification[]).sort(
+      const res = await api.get(`/notifications?userId=${userId}`);
+      const sorted = (res as Notification[]).sort(
         (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
       setNotifications(sorted);
@@ -43,7 +45,7 @@ export default function NotificationsPage() {
 
   async function markAsRead(id: number) {
     try {
-      await api.put(`/api/notifications/${id}/read`);
+      await api.put(`/notifications/${id}/read`);
       setNotifications((prev) =>
         prev.map((n) => (n.id === id ? { ...n, read: true } : n))
       );
@@ -55,7 +57,7 @@ export default function NotificationsPage() {
   async function markAllAsRead() {
     if (!userId) return;
     try {
-      await api.put(`/api/notifications/read-all?userId=${userId}`);
+      await api.put(`/notifications/read-all?userId=${userId}`);
       setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
     } catch {
       /* empty */
