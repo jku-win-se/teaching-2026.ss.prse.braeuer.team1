@@ -311,7 +311,7 @@ export default function SchedulesPage() {
               <Label>Gerät</Label>
               <Select
                 value={form.deviceId}
-                onValueChange={(v) => setForm({ ...form, deviceId: v })}
+                onValueChange={(v) => setForm({ ...form, deviceId: v ?? "" })}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Gerät wählen" />
