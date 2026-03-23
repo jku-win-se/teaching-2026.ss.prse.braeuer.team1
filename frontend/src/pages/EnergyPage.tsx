@@ -222,10 +222,12 @@ export default function EnergyPage() {
                       <Tooltip
                         formatter={(value: number) => [`${value} Wh`]}
                         contentStyle={{
-                          backgroundColor: "hsl(var(--card))",
-                          border: "1px solid hsl(var(--border))",
+                          backgroundColor: "#fff",
+                          color: "#333",
+                          border: "1px solid #e5e7eb",
                           borderRadius: "6px",
                         }}
+                        cursor={{ fill: "rgba(0, 0, 0, 0.05)" }}
                       />
                       <Legend />
                       <Bar
@@ -307,10 +309,12 @@ export default function EnergyPage() {
                         <Tooltip
                           formatter={(value: number) => [`${value} Wh`]}
                           contentStyle={{
-                            backgroundColor: "hsl(var(--card))",
-                            border: "1px solid hsl(var(--border))",
+                            backgroundColor: "#fff",
+                            color: "#333",
+                            border: "1px solid #e5e7eb",
                             borderRadius: "6px",
                           }}
+                          cursor={{ fill: "rgba(0, 0, 0, 0.05)" }}
                         />
                         <Legend />
                         <Bar
@@ -362,8 +366,9 @@ export default function EnergyPage() {
                           <Tooltip
                             formatter={(value: number) => [`${value} Wh`]}
                             contentStyle={{
-                              backgroundColor: "hsl(var(--card))",
-                              border: "1px solid hsl(var(--border))",
+                              backgroundColor: "#fff",
+                              color: "#333",
+                              border: "1px solid #e5e7eb",
                               borderRadius: "6px",
                             }}
                           />
