@@ -5,7 +5,6 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { useAuth } from "@/contexts/AuthContext";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   Popover,
   PopoverContent,
@@ -38,15 +37,7 @@ function NotificationDropdown() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    if (user?.id) loadNotifications();
-    const interval = setInterval(() => {
-      if (user?.id) loadNotifications();
-    }, 30000);
-    return () => clearInterval(interval);
-  }, [user?.id]);
-
-  async function loadNotifications() {
+  const loadNotifications = async () => {
     try {
       const res = await api.get<Notification[]>(`/notifications?userId=${user?.id}`);
       setNotifications(
@@ -55,7 +46,16 @@ function NotificationDropdown() {
     } catch {
       /* empty */
     }
-  }
+  };
+
+  useEffect(() => {
+    if (user?.id) loadNotifications();
+    const interval = setInterval(() => {
+      if (user?.id) loadNotifications();
+    }, 30000);
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
 
   async function markAsRead(id: number) {
     try {
