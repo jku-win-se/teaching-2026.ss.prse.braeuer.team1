@@ -220,7 +220,7 @@ export default function EnergyPage() {
                       />
                       <YAxis tick={{ fontSize: 12 }} />
                       <Tooltip
-                        formatter={(value: number) => [`${value} Wh`]}
+                        formatter={(value) => [`${value} Wh`]}
                         contentStyle={{
                           backgroundColor: "#fff",
                           color: "#333",
@@ -307,7 +307,7 @@ export default function EnergyPage() {
                         <XAxis dataKey="name" tick={{ fontSize: 12 }} />
                         <YAxis tick={{ fontSize: 12 }} />
                         <Tooltip
-                          formatter={(value: number) => [`${value} Wh`]}
+                          formatter={(value) => [`${value} Wh`]}
                           contentStyle={{
                             backgroundColor: "#fff",
                             color: "#333",
@@ -364,7 +364,7 @@ export default function EnergyPage() {
                             ))}
                           </Pie>
                           <Tooltip
-                            formatter={(value: number) => [`${value} Wh`]}
+                            formatter={(value) => [`${value} Wh`]}
                             contentStyle={{
                               backgroundColor: "#fff",
                               color: "#333",

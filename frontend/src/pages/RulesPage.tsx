@@ -409,7 +409,7 @@ export default function RulesPage() {
               <Label>Aktion-Gerät</Label>
               <Select
                 value={form.actionDeviceId}
-                onValueChange={(v) => setForm({ ...form, actionDeviceId: v })}
+                onValueChange={(v) => setForm({ ...form, actionDeviceId: v ?? "" })}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Gerät wählen" />
