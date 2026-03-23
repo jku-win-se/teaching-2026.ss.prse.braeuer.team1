@@ -201,7 +201,7 @@ export default function VacationPage() {
           </p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
+          <DialogTrigger>
             <Button onClick={openCreate}>
               <Plus className="h-4 w-4 mr-2" /> Neuer Urlaubsmodus
             </Button>
@@ -235,7 +235,7 @@ export default function VacationPage() {
                 <Label>Zeitplan während Urlaub</Label>
                 <Select
                   value={form.scheduleId}
-                  onValueChange={(v) => setForm({ ...form, scheduleId: v })}
+                  onValueChange={(v) => setForm({ ...form, scheduleId: v ?? "" })}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Zeitplan auswählen..." />
@@ -363,7 +363,7 @@ export default function VacationPage() {
                         <Pencil className="h-4 w-4" />
                       </Button>
                       <AlertDialog>
-                        <AlertDialogTrigger asChild>
+                        <AlertDialogTrigger>
                           <Button variant="ghost" size="icon">
                             <Trash2 className="h-4 w-4 text-destructive" />
                           </Button>

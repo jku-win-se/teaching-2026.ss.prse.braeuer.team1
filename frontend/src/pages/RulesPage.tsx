@@ -360,7 +360,7 @@ export default function RulesPage() {
                   <Select
                     value={form.triggerDeviceId}
                     onValueChange={(v) =>
-                      setForm({ ...form, triggerDeviceId: v })
+                      setForm({ ...form, triggerDeviceId: v ?? "" })
                     }
                   >
                     <SelectTrigger>

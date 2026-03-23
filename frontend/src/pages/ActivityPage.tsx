@@ -162,7 +162,7 @@ export default function ActivityPage() {
                 className="pl-10"
               />
             </div>
-            <Select value={filterDevice} onValueChange={setFilterDevice}>
+            <Select value={filterDevice} onValueChange={(v) => setFilterDevice(v ?? "all")}>
               <SelectTrigger className="w-full sm:w-[200px]">
                 <Filter className="h-4 w-4 mr-2" />
                 <SelectValue placeholder="Gerät filtern" />
@@ -176,7 +176,7 @@ export default function ActivityPage() {
                 ))}
               </SelectContent>
             </Select>
-            <Select value={filterActor} onValueChange={setFilterActor}>
+            <Select value={filterActor} onValueChange={(v) => setFilterActor(v ?? "all")}>
               <SelectTrigger className="w-full sm:w-[200px]">
                 <User className="h-4 w-4 mr-2" />
                 <SelectValue placeholder="Akteur filtern" />
