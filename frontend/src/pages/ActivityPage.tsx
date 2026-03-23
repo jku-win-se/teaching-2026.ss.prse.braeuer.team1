@@ -6,7 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Activity, Download, Search, Filter, Clock, User, Monitor, Home } from "lucide-react";
-import api from "@/lib/api";
+import { useAuth } from "@/contexts/AuthContext";
+import { api } from "@/services/api";
 
 interface ActivityLog {
   id: number;
@@ -31,24 +32,31 @@ export default function ActivityPage() {
   const [filterDevice, setFilterDevice] = useState<string>("all");
   const [filterActor, setFilterActor] = useState<string>("all");
 
-  const userId = localStorage.getItem("userId");
+  const { user } = useAuth();
+  const userId = user?.id;
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (userId) loadData();
+  }, [userId]);
 
   async function loadData() {
     setLoading(true);
     try {
-      const [logsRes, devicesRes] = await Promise.all([
-        api.get(`/api/activity-logs${userId ? `?userId=${userId}` : ""}`),
-        api.get(`/api/devices${userId ? `?userId=${userId}` : ""}`),
+      const [logsRes, roomsRes] = await Promise.all([
+        api.get<ActivityLog[]>(`/activity-logs${userId ? `?userId=${userId}` : ""}`),
+        api.get<{ id: number; name: string }[]>(`/rooms${userId ? `?userId=${userId}` : ""}`),
       ]);
-      const sortedLogs = (logsRes.data as ActivityLog[]).sort(
+      const sortedLogs = logsRes.sort(
         (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
       );
       setLogs(sortedLogs);
-      setDevices(devicesRes.data as Device[]);
+      // Load devices per room
+      const allDevices: Device[] = [];
+      for (const room of roomsRes) {
+        const roomDevices = await api.get<Device[]>(`/rooms/${room.id}/devices`);
+        allDevices.push(...roomDevices.map((d) => ({ id: d.id, name: d.name })));
+      }
+      setDevices(allDevices);
     } catch {
       /* empty */
     } finally {
@@ -59,10 +67,8 @@ export default function ActivityPage() {
   async function handleExportCsv() {
     if (!userId) return;
     try {
-      const res = await api.get(`/api/activity-logs/export?userId=${userId}`, {
-        responseType: "blob",
-      });
-      const url = window.URL.createObjectURL(new Blob([res.data as BlobPart]));
+      const csvText = await api.get<string>(`/activity-logs/export?userId=${userId}`);
+      const url = window.URL.createObjectURL(new Blob([csvText]));
       const a = document.createElement("a");
       a.href = url;
       a.download = "activity-log.csv";
