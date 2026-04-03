@@ -54,7 +54,7 @@ const emptyForm: ScheduleForm = {
 };
 
 export default function SchedulesPage() {
-  const { user } = useAuth();
+  const { user, isOwner } = useAuth();
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [devices, setDevices] = useState<Device[]>([]);
   const [loading, setLoading] = useState(true);
@@ -70,8 +70,8 @@ export default function SchedulesPage() {
     if (!user) return;
     try {
       const [scheduleList, roomList] = await Promise.all([
-        api.get<Schedule[]>(`/schedules?userId=${user.id}`),
-        api.get<Room[]>(`/rooms?userId=${user.id}`),
+        api.get<Schedule[]>(`/schedules${isOwner ? `?userId=${user.id}` : ""}`),
+        api.get<Room[]>(`/rooms${isOwner ? `?userId=${user.id}` : ""}`),
       ]);
       setSchedules(scheduleList);
       const devs: Device[] = [];

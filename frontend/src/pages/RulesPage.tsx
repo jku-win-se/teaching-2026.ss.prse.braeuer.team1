@@ -68,7 +68,7 @@ const emptyForm: RuleForm = {
 };
 
 export default function RulesPage() {
-  const { user } = useAuth();
+  const { user, isOwner } = useAuth();
   const [rules, setRules] = useState<Rule[]>([]);
   const [devices, setDevices] = useState<Device[]>([]);
   const [loading, setLoading] = useState(true);
@@ -84,8 +84,8 @@ export default function RulesPage() {
     if (!user) return;
     try {
       const [ruleList, roomList] = await Promise.all([
-        api.get<Rule[]>(`/rules?userId=${user.id}`),
-        api.get<Room[]>(`/rooms?userId=${user.id}`),
+        api.get<Rule[]>(`/rules${isOwner ? `?userId=${user.id}` : ""}`),
+        api.get<Room[]>(`/rooms${isOwner ? `?userId=${user.id}` : ""}`),
       ]);
       setRules(ruleList);
       const devs: Device[] = [];

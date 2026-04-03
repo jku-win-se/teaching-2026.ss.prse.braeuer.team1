@@ -32,12 +32,12 @@ export default function ActivityPage() {
   const [filterDevice, setFilterDevice] = useState<string>("all");
   const [filterActor, setFilterActor] = useState<string>("all");
 
-  const { user } = useAuth();
-  const userId = user?.id;
+  const { user, isOwner } = useAuth();
+  const userId = isOwner ? user?.id : undefined;
 
   useEffect(() => {
-    if (userId) loadData();
-  }, [userId]);
+    if (user) loadData();
+  }, [user]);
 
   async function loadData() {
     setLoading(true);

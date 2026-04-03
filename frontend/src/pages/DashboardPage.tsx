@@ -43,7 +43,7 @@ interface ActivityLog {
 }
 
 export default function DashboardPage() {
-  const { user } = useAuth();
+  const { user, isOwner } = useAuth();
   const [rooms, setRooms] = useState<Room[]>([]);
   const [devices, setDevices] = useState<Device[]>([]);
   const [rules, setRules] = useState<Rule[]>([]);
@@ -58,7 +58,7 @@ export default function DashboardPage() {
 
   async function loadDashboard() {
     try {
-      const userId = user?.id;
+      const userId = isOwner ? user?.id : undefined;
       const [roomsRes, rulesRes, schedulesRes, energyRes, activityRes] =
         await Promise.all([
           api.get<Room[]>(`/rooms${userId ? `?userId=${userId}` : ""}`),

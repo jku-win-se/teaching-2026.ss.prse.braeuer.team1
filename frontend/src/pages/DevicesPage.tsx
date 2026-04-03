@@ -52,7 +52,7 @@ function levelLabel(type: DeviceType): string {
 }
 
 export default function DevicesPage() {
-  const { user } = useAuth();
+  const { user, isOwner } = useAuth();
   const [rooms, setRooms] = useState<Room[]>([]);
   const [allDevices, setAllDevices] = useState<Device[]>([]);
   const [loading, setLoading] = useState(true);
@@ -64,7 +64,7 @@ export default function DevicesPage() {
   const fetchData = async () => {
     if (!user) return;
     try {
-      const roomList = await api.get<Room[]>(`/rooms?userId=${user.id}`);
+      const roomList = await api.get<Room[]>(`/rooms${isOwner ? `?userId=${user.id}` : ""}`);
       setRooms(roomList);
       const devices: Device[] = [];
       await Promise.all(

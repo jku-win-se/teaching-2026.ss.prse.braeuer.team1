@@ -46,15 +46,21 @@ function formatWh(wh: number): string {
 }
 
 export default function EnergyPage() {
-  const { user } = useAuth();
+  const { user, isOwner } = useAuth();
   const [dashboard, setDashboard] = useState<EnergyDashboard | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchDashboard = async () => {
     if (!user) return;
     try {
+      let energyUserId = user.id;
+      if (!isOwner) {
+        const users = await api.get<{ id: number; role: string }[]>("/users");
+        const owner = users.find((u) => u.role === "OWNER");
+        if (owner) energyUserId = owner.id;
+      }
       const data = await api.get<EnergyDashboard>(
-        `/energy/dashboard?userId=${user.id}`
+        `/energy/dashboard?userId=${energyUserId}`
       );
       setDashboard(data);
     } catch {
@@ -71,7 +77,13 @@ export default function EnergyPage() {
   const handleExport = async () => {
     if (!user) return;
     try {
-      const blob = await api.getBlob(`/energy/export?userId=${user.id}`);
+      let energyUserId = user.id;
+      if (!isOwner) {
+        const users = await api.get<{ id: number; role: string }[]>("/users");
+        const owner = users.find((u) => u.role === "OWNER");
+        if (owner) energyUserId = owner.id;
+      }
+      const blob = await api.getBlob(`/energy/export?userId=${energyUserId}`);
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;

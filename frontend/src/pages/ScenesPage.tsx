@@ -25,7 +25,7 @@ interface DeviceStateEntry {
 }
 
 export default function ScenesPage() {
-  const { user } = useAuth();
+  const { user, isOwner } = useAuth();
   const [scenes, setScenes] = useState<Scene[]>([]);
   const [allDevices, setAllDevices] = useState<Device[]>([]);
   const [loading, setLoading] = useState(true);
@@ -42,8 +42,8 @@ export default function ScenesPage() {
     if (!user) return;
     try {
       const [sceneList, rooms] = await Promise.all([
-        api.get<Scene[]>(`/scenes?userId=${user.id}`),
-        api.get<Room[]>(`/rooms?userId=${user.id}`),
+        api.get<Scene[]>(`/scenes${isOwner ? `?userId=${user.id}` : ""}`),
+        api.get<Room[]>(`/rooms${isOwner ? `?userId=${user.id}` : ""}`),
       ]);
       setScenes(sceneList);
       const devices: Device[] = [];

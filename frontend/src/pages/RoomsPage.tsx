@@ -43,7 +43,7 @@ const DEVICE_TYPE_CONFIG: Record<DeviceType, { label: string; icon: typeof Light
 };
 
 export default function RoomsPage() {
-  const { user } = useAuth();
+  const { user, isOwner } = useAuth();
   const [rooms, setRooms] = useState<Room[]>([]);
   const [roomDevices, setRoomDevices] = useState<Record<number, Device[]>>({});
   const [loading, setLoading] = useState(true);
@@ -64,7 +64,7 @@ export default function RoomsPage() {
   const fetchRooms = async () => {
     if (!user) return;
     try {
-      const data = await api.get<Room[]>(`/rooms?userId=${user.id}`);
+      const data = await api.get<Room[]>(`/rooms${isOwner ? `?userId=${user.id}` : ""}`);
       setRooms(data);
       const devicesMap: Record<number, Device[]> = {};
       await Promise.all(
