@@ -4,6 +4,7 @@ import at.jku.se.dto.request.DeviceRenameRequest;
 import at.jku.se.dto.request.DeviceStateRequest;
 import at.jku.se.entity.ActivityLog;
 import at.jku.se.entity.Device;
+import at.jku.se.iot.IoTIntegrationService;
 import at.jku.se.mapper.DeviceMapper;
 import at.jku.se.repository.ActivityLogRepository;
 import at.jku.se.repository.DeviceRepository;
@@ -38,6 +39,9 @@ public class DeviceResource {
 
     @Inject
     ActivityLogRepository activityLogRepo;
+
+    @Inject
+    IoTIntegrationService iotService;
 
     /**
      * Returns a single device including its current state (FR-07).
@@ -140,6 +144,8 @@ public class DeviceResource {
         log.description = description.toString();
         log.timestamp = device.updatedAt;
         activityLogRepo.persist(log);
+
+        iotService.pushStateToHardware(device);
 
         return Response.ok(DeviceMapper.toResponse(device)).build();
     }
