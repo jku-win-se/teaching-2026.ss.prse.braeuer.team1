@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { api } from "@/services/api";
 import { useAuth } from "@/contexts/AuthContext";
+import { useDeviceWebSocket } from "@/hooks/useDeviceWebSocket";
 import type { Room, Device, DeviceType } from "@/types/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -84,6 +85,12 @@ export default function DevicesPage() {
   useEffect(() => {
     fetchData();
   }, [user]);
+
+  const handleWebSocketUpdate = useCallback((updatedDevice: Device) => {
+    setAllDevices((prev) => prev.map((d) => (d.id === updatedDevice.id ? updatedDevice : d)));
+  }, []);
+
+  useDeviceWebSocket(handleWebSocketUpdate);
 
   const updateDeviceState = async (device: Device, switchedOn?: boolean, level?: number) => {
     try {

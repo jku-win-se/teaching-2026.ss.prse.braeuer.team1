@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { api } from "@/services/api";
+import { useDeviceWebSocket } from "@/hooks/useDeviceWebSocket";
 import { Badge } from "@/components/ui/badge";
 import { DoorOpen, Lightbulb, Zap, ShieldCheck, Clock, Activity, Wifi, WifiOff } from "lucide-react";
 
@@ -62,6 +63,12 @@ export default function DashboardPage() {
   useEffect(() => {
     loadDashboard();
   }, []);
+
+  const handleWebSocketUpdate = useCallback((updatedDevice: Device) => {
+    setDevices((prev) => prev.map((d) => (d.id === updatedDevice.id ? updatedDevice : d)));
+  }, []);
+
+  useDeviceWebSocket(handleWebSocketUpdate);
 
   async function loadDashboard() {
     try {
