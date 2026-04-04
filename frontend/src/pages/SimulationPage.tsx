@@ -235,7 +235,7 @@ export default function SimulationPage() {
       const deviceEvents = scenario
         .filter((e) => e.deviceId === d.id && e.hour <= startH)
         .sort((a, b) => a.hour - b.hour);
-      let state = { ...d };
+      const state = { ...d };
       deviceEvents.forEach((e) => {
         if (e.switchedOn !== undefined) state.switchedOn = e.switchedOn;
         if (e.level !== undefined) state.level = e.level;
