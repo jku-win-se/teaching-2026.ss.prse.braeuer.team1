@@ -11,6 +11,7 @@ import {
   Palmtree,
   Users,
   LogOut,
+  FastForward,
 } from "lucide-react";
 import {
   Sidebar,
@@ -38,6 +39,7 @@ const navItems = [
   { title: "Aktivitäten", icon: ClipboardList, path: "/activity" },
   { title: "Benachrichtigungen", icon: Bell, path: "/notifications" },
   { title: "Urlaubsmodus", icon: Palmtree, path: "/vacation" },
+  { title: "Simulation", icon: FastForward, path: "/simulation" },
 ];
 
 const ownerItems = [

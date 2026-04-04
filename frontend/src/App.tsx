@@ -14,6 +14,7 @@ import ActivityPage from "@/pages/ActivityPage";
 import NotificationsPage from "@/pages/NotificationsPage";
 import VacationPage from "@/pages/VacationPage";
 import MembersPage from "@/pages/MembersPage";
+import SimulationPage from "@/pages/SimulationPage";
 import { Toaster } from "@/components/ui/sonner";
 
 export default function App() {
@@ -35,6 +36,7 @@ export default function App() {
             <Route path="/notifications" element={<NotificationsPage />} />
             <Route path="/vacation" element={<VacationPage />} />
             <Route path="/members" element={<MembersPage />} />
+            <Route path="/simulation" element={<SimulationPage />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
