@@ -8,6 +8,7 @@ import at.jku.se.iot.IoTIntegrationService;
 import at.jku.se.mapper.DeviceMapper;
 import at.jku.se.repository.ActivityLogRepository;
 import at.jku.se.repository.DeviceRepository;
+import at.jku.se.websocket.DeviceEventBroadcaster;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -42,6 +43,9 @@ public class DeviceResource {
 
     @Inject
     IoTIntegrationService iotService;
+
+    @Inject
+    DeviceEventBroadcaster deviceEventBroadcaster;
 
     /**
      * Returns a single device including its current state (FR-07).
@@ -146,6 +150,8 @@ public class DeviceResource {
         activityLogRepo.persist(log);
 
         iotService.pushStateToHardware(device);
+
+        deviceEventBroadcaster.broadcastDeviceUpdate(DeviceMapper.toResponse(device));
 
         return Response.ok(DeviceMapper.toResponse(device)).build();
     }
