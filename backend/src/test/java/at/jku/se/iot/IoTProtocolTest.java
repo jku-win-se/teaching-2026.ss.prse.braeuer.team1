@@ -125,4 +125,148 @@ class IoTProtocolTest {
         assertEquals("mqtt", event.source());
         assertNotNull(event.timestamp());
     }
+
+    // ── Mock adapter edge cases ──────────────────────────────────────────
+
+    @Test
+    void testSubscribeNotConnected() {
+        assertThrows(IoTException.class, () ->
+                adapter.subscribe("topic", e -> {}));
+    }
+
+    @Test
+    void testUnsubscribeNotConnected() {
+        assertThrows(IoTException.class, () ->
+                adapter.unsubscribe("topic"));
+    }
+
+    @Test
+    void testSimulateEventNoSubscriber() {
+        adapter.connect();
+        // should not throw
+        adapter.simulateEvent("unknown/topic", DeviceEvent.stateChange("x", Map.of()));
+    }
+
+    @Test
+    void testDisconnectClearsSubscriptions() throws IoTException {
+        adapter.connect();
+        AtomicReference<DeviceEvent> received = new AtomicReference<>();
+        adapter.subscribe("topic", received::set);
+        adapter.disconnect();
+
+        adapter.connect();
+        adapter.simulateEvent("topic", DeviceEvent.stateChange("x", Map.of()));
+        assertNull(received.get());
+    }
+
+    @Test
+    void testSentCommandsUnmodifiable() throws IoTException {
+        adapter.connect();
+        adapter.sendCommand(DeviceCommand.switchOn(1L));
+        assertThrows(UnsupportedOperationException.class, () ->
+                adapter.getSentCommands().clear());
+    }
+
+    // ── MQTT adapter tests ──────────────────────────────────────────────
+
+    @Test
+    void testMqttConnectDisconnect() throws IoTException {
+        MqttProtocolAdapter mqtt = new MqttProtocolAdapter("tcp://localhost:1883");
+        assertFalse(mqtt.isConnected());
+        mqtt.connect();
+        assertTrue(mqtt.isConnected());
+        mqtt.disconnect();
+        assertFalse(mqtt.isConnected());
+    }
+
+    @Test
+    void testMqttSendCommandNotConnected() {
+        MqttProtocolAdapter mqtt = new MqttProtocolAdapter("tcp://localhost:1883");
+        assertThrows(IoTException.class, () ->
+                mqtt.sendCommand(DeviceCommand.switchOn(1L)));
+    }
+
+    @Test
+    void testMqttSendCommand() throws IoTException {
+        MqttProtocolAdapter mqtt = new MqttProtocolAdapter("tcp://localhost:1883");
+        mqtt.connect();
+        mqtt.sendCommand(DeviceCommand.switchOn(1L));
+        // no exception = success (actual publish is a stub)
+    }
+
+    @Test
+    void testMqttSubscribe() throws IoTException {
+        MqttProtocolAdapter mqtt = new MqttProtocolAdapter("tcp://localhost:1883");
+        mqtt.connect();
+        mqtt.subscribe("1", e -> {});
+        // no exception = success
+    }
+
+    @Test
+    void testMqttSubscribeNotConnected() {
+        MqttProtocolAdapter mqtt = new MqttProtocolAdapter("tcp://localhost:1883");
+        assertThrows(IoTException.class, () ->
+                mqtt.subscribe("1", e -> {}));
+    }
+
+    @Test
+    void testMqttUnsubscribe() throws IoTException {
+        MqttProtocolAdapter mqtt = new MqttProtocolAdapter("tcp://localhost:1883");
+        mqtt.connect();
+        mqtt.subscribe("1", e -> {});
+        mqtt.unsubscribe("1");
+        // no exception = success
+    }
+
+    @Test
+    void testMqttUnsubscribeNotConnected() {
+        MqttProtocolAdapter mqtt = new MqttProtocolAdapter("tcp://localhost:1883");
+        assertThrows(IoTException.class, () ->
+                mqtt.unsubscribe("1"));
+    }
+
+    @Test
+    void testMqttGetBrokerUrl() {
+        MqttProtocolAdapter mqtt = new MqttProtocolAdapter("tcp://test:1883");
+        assertEquals("tcp://test:1883", mqtt.getBrokerUrl());
+    }
+
+    @Test
+    void testMqttSimulateMessage() throws IoTException {
+        MqttProtocolAdapter mqtt = new MqttProtocolAdapter("tcp://localhost:1883");
+        mqtt.connect();
+        AtomicReference<DeviceEvent> received = new AtomicReference<>();
+        mqtt.subscribe("1", received::set);
+
+        DeviceEvent event = DeviceEvent.stateChange("hw", Map.of("on", true));
+        mqtt.simulateMessage("smarthome/devices/1/state", event);
+
+        assertNotNull(received.get());
+        assertEquals("STATE_CHANGE", received.get().eventType());
+    }
+
+    @Test
+    void testMqttSimulateMessageNoListener() throws IoTException {
+        MqttProtocolAdapter mqtt = new MqttProtocolAdapter("tcp://localhost:1883");
+        mqtt.connect();
+        // no subscriber, should not throw
+        mqtt.simulateMessage("smarthome/devices/999/state",
+                DeviceEvent.stateChange("x", Map.of()));
+    }
+
+    // ── IoTException tests ──────────────────────────────────────────────
+
+    @Test
+    void testIoTExceptionMessage() {
+        IoTException ex = new IoTException("test error");
+        assertEquals("test error", ex.getMessage());
+    }
+
+    @Test
+    void testIoTExceptionWithCause() {
+        RuntimeException cause = new RuntimeException("root");
+        IoTException ex = new IoTException("wrapped", cause);
+        assertEquals("wrapped", ex.getMessage());
+        assertEquals(cause, ex.getCause());
+    }
 }

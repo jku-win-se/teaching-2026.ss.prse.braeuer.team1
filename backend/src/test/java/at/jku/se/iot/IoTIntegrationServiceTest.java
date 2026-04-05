@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -90,10 +91,55 @@ class IoTIntegrationServiceTest {
     }
 
     @Test
+    void testNoPushWhenProtocolNull() {
+        service.setProtocol(null);
+        Device device = createDevice(1L, DeviceType.SWITCH);
+        device.switchedOn = true;
+
+        service.pushStateToHardware(device);
+        // no exception = success
+    }
+
+    @Test
     void testSubscribeAndUnsubscribe() {
         service.subscribeToDevice(1L);
         service.unsubscribeFromDevice(1L);
         // no exception = success
+    }
+
+    @Test
+    void testSubscribeWhenDisconnected() {
+        mockAdapter.disconnect();
+        service.subscribeToDevice(1L);
+        // no exception, just returns early
+    }
+
+    @Test
+    void testUnsubscribeWhenDisconnected() {
+        mockAdapter.disconnect();
+        service.unsubscribeFromDevice(1L);
+        // no exception, just returns early
+    }
+
+    @Test
+    void testSubscribeWhenProtocolNull() {
+        service.setProtocol(null);
+        service.subscribeToDevice(1L);
+        // no exception
+    }
+
+    @Test
+    void testUnsubscribeWhenProtocolNull() {
+        service.setProtocol(null);
+        service.unsubscribeFromDevice(1L);
+        // no exception
+    }
+
+    @Test
+    void testSubscribeReceivesEvent() {
+        service.subscribeToDevice(42L);
+        mockAdapter.simulateEvent("42", DeviceEvent.stateChange("hw", Map.of("on", true)));
+        // no exception, event logged internally
     }
 
     @Test
@@ -104,8 +150,20 @@ class IoTIntegrationServiceTest {
     }
 
     @Test
+    void testIsConnectedWhenProtocolNull() {
+        service.setProtocol(null);
+        assertFalse(service.isConnected());
+    }
+
+    @Test
     void testGetProtocolName() {
         assertEquals("MOCK", service.getProtocolName());
+    }
+
+    @Test
+    void testGetProtocolNameWhenNull() {
+        service.setProtocol(null);
+        assertEquals("NONE", service.getProtocolName());
     }
 
     @Test
@@ -116,6 +174,42 @@ class IoTIntegrationServiceTest {
         service.pushStateToHardware(device);
 
         assertEquals(0, mockAdapter.getSentCommands().size());
+    }
+
+    @Test
+    void testSwitchWithNullSwitchedOn() {
+        Device device = createDevice(6L, DeviceType.SWITCH);
+        device.switchedOn = null;
+
+        service.pushStateToHardware(device);
+
+        assertEquals(1, mockAdapter.getSentCommands().size());
+        assertEquals("SWITCH_OFF", mockAdapter.getSentCommands().get(0).action());
+    }
+
+    @Test
+    void testPushSensorWithLevel() {
+        Device device = createDevice(7L, DeviceType.SENSOR);
+        device.level = 42.0;
+
+        service.pushStateToHardware(device);
+
+        assertEquals(1, mockAdapter.getSentCommands().size());
+        assertEquals("SET_LEVEL", mockAdapter.getSentCommands().get(0).action());
+    }
+
+    @Test
+    void testShutdownDisconnects() {
+        assertTrue(mockAdapter.isConnected());
+        service.shutdown();
+        assertFalse(mockAdapter.isConnected());
+    }
+
+    @Test
+    void testShutdownWhenProtocolNull() {
+        service.setProtocol(null);
+        service.shutdown();
+        // no exception
     }
 
     private Device createDevice(Long id, DeviceType type) {
