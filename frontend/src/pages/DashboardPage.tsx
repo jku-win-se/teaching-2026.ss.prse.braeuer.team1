@@ -3,21 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { api } from "@/services/api";
 import { useDeviceWebSocket } from "@/hooks/useDeviceWebSocket";
+import type { Device } from "@/types/types";
 import { Badge } from "@/components/ui/badge";
 import { DoorOpen, Lightbulb, Zap, ShieldCheck, Clock, Activity, Wifi, WifiOff } from "lucide-react";
 
 interface Room {
   id: number;
   name: string;
-}
-
-interface Device {
-  id: number;
-  name: string;
-  type: string;
-  switchedOn?: boolean;
-  level?: number;
-  roomName?: string;
 }
 
 interface Rule {
