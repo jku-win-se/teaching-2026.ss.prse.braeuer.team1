@@ -4,7 +4,6 @@ import at.jku.se.dto.response.SceneDeviceStateResponse;
 import at.jku.se.dto.response.SceneResponse;
 import at.jku.se.entity.Scene;
 import at.jku.se.entity.SceneDeviceState;
-import java.util.stream.Collectors;
 
 /** Maps {@link Scene} entities to response DTOs. */
 public class SceneMapper {
@@ -25,7 +24,7 @@ public class SceneMapper {
         r.userId = scene.user.id;
         r.deviceStates = scene.deviceStates.stream()
                 .map(SceneMapper::toStateResponse)
-                .collect(Collectors.toList());
+                .toList();
         return r;
     }
 

@@ -27,7 +27,6 @@ import jakarta.ws.rs.core.Response;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * REST resource for vacation mode (FR-21).
@@ -69,7 +68,7 @@ public class VacationModeResource {
         }
         List<VacationModeResponse> result = modes.stream()
                 .map(VacationModeMapper::toResponse)
-                .collect(Collectors.toList());
+                .toList();
         return Response.ok(result).build();
     }
 
