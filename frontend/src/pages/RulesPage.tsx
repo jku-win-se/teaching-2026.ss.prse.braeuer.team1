@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { useAuth } from "@/contexts/AuthContext";
-import type { Rule, Device, Room, TriggerType } from "@/types/types";
+import type { Rule, Device, Room, TriggerType, Conflict } from "@/types/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,6 +31,7 @@ import {
   Clock,
   Activity,
   Radio,
+  AlertTriangle,
 } from "lucide-react";
 
 const TRIGGER_LABELS: Record<TriggerType, string> = {
@@ -71,6 +72,7 @@ export default function RulesPage() {
   const { user, isOwner } = useAuth();
   const [rules, setRules] = useState<Rule[]>([]);
   const [devices, setDevices] = useState<Device[]>([]);
+  const [conflicts, setConflicts] = useState<Conflict[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -79,6 +81,16 @@ export default function RulesPage() {
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deletingRule, setDeletingRule] = useState<Rule | null>(null);
+
+  const fetchConflicts = async () => {
+    if (!user) return;
+    try {
+      const all = await api.get<Conflict[]>(`/conflicts?userId=${user.id}`);
+      setConflicts(all.filter((c) => c.conflictType.includes("RULE")));
+    } catch {
+      // ignore — conflicts are non-critical
+    }
+  };
 
   const fetchData = async () => {
     if (!user) return;
@@ -96,6 +108,7 @@ export default function RulesPage() {
         })
       );
       setDevices(devs);
+      fetchConflicts();
     } catch {
       toast.error("Regeln konnten nicht geladen werden.");
     } finally {
@@ -155,8 +168,13 @@ export default function RulesPage() {
         toast.success("Regel erstellt.");
       }
       setDialogOpen(false);
-    } catch {
-      toast.error("Fehler beim Speichern der Regel.");
+      fetchConflicts();
+    } catch (err: unknown) {
+      if (err instanceof Error && "status" in err && (err as { status: number }).status === 409) {
+        toast.error("Konflikt: Eine aktive Regel steuert dieses Gerät bereits mit einem anderen Wert.");
+      } else {
+        toast.error("Fehler beim Speichern der Regel.");
+      }
     }
   };
 
@@ -217,6 +235,24 @@ export default function RulesPage() {
           Neue Regel
         </Button>
       </div>
+
+      {conflicts.length > 0 && (
+        <Card className="border-yellow-500 bg-yellow-50 dark:bg-yellow-950/20">
+          <CardContent className="flex items-start gap-3 py-4">
+            <AlertTriangle className="mt-0.5 size-5 shrink-0 text-yellow-600" />
+            <div className="space-y-1">
+              <p className="font-medium text-yellow-800 dark:text-yellow-400">
+                Konflikte erkannt
+              </p>
+              {conflicts.map((c, i) => (
+                <p key={i} className="text-sm text-yellow-700 dark:text-yellow-500">
+                  {c.message}
+                </p>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {rules.length === 0 ? (
         <Card>

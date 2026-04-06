@@ -117,3 +117,16 @@ export interface VacationMode {
   scheduleName: string;
   active: boolean;
 }
+
+export interface Conflict {
+  conflictType: string;
+  message: string;
+  sourceId: number;
+  sourceName: string;
+  sourceKind: string;
+  targetId: number;
+  targetName: string;
+  targetKind: string;
+  deviceId: number;
+  deviceName: string;
+}

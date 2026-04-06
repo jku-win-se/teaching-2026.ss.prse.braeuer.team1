@@ -1,6 +1,7 @@
 package at.jku.se.resource;
 
 import at.jku.se.dto.request.RuleRequest;
+import at.jku.se.dto.response.ConflictResponse;
 import at.jku.se.dto.response.RuleResponse;
 import at.jku.se.entity.Device;
 import at.jku.se.entity.Rule;
@@ -9,6 +10,7 @@ import at.jku.se.mapper.RuleMapper;
 import at.jku.se.repository.DeviceRepository;
 import at.jku.se.repository.RuleRepository;
 import at.jku.se.repository.UserRepository;
+import at.jku.se.service.ConflictDetectionService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -47,6 +49,9 @@ public class RuleResource {
 
     @Inject
     UserRepository userRepo;
+
+    @Inject
+    ConflictDetectionService conflictService;
 
     /**
      * Lists rules. Optionally filtered by userId.
@@ -121,17 +126,25 @@ public class RuleResource {
         rule.actionValue = request.actionValue;
         rule.active = request.active;
         rule.user = user;
+        // FR-15: Conflict detection — warn if another active rule targets same device
+        if (Boolean.TRUE.equals(request.active)) {
+            List<ConflictResponse> conflicts = conflictService.checkRuleConflicts(rule, null);
+            if (!conflicts.isEmpty()) {
+                return Response.status(Response.Status.CONFLICT)
+                        .entity(Map.of("error", conflicts.get(0).message)).build();
+            }
+        }
         ruleRepo.persist(rule);
         return Response.created(URI.create("/api/rules/" + rule.id))
                 .entity(RuleMapper.toResponse(rule)).build();
     }
 
     /**
-     * Updates an existing rule (FR-10, FR-11).
+     * Updates an existing rule (FR-10, FR-11, FR-15).
      *
      * @param id      the rule ID
      * @param request the updated rule definition
-     * @return 200 with the updated rule
+     * @return 200 with the updated rule, or 409 on conflict
      */
     @PUT
     @Path("/{id}")
@@ -157,6 +170,14 @@ public class RuleResource {
         rule.actionDevice = actionDevice;
         rule.actionValue = request.actionValue;
         rule.active = request.active;
+        // FR-15: Conflict detection — exclude current rule from check
+        if (Boolean.TRUE.equals(request.active)) {
+            List<ConflictResponse> conflicts = conflictService.checkRuleConflicts(rule, id);
+            if (!conflicts.isEmpty()) {
+                return Response.status(Response.Status.CONFLICT)
+                        .entity(Map.of("error", conflicts.get(0).message)).build();
+            }
+        }
         return Response.ok(RuleMapper.toResponse(rule)).build();
     }
 
