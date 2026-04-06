@@ -69,7 +69,7 @@ class ScheduleResourceTest {
             .body("{\"name\":\"Dup\",\"cronExpression\":\"0 12 * * SUN\","
                 + "\"deviceId\":1,\"actionValue\":\"false\",\"active\":true,\"userId\":1}")
             .when().post("/api/schedules").then().statusCode(409)
-            .body("error", containsString("Scheduling conflict"));
+            .body("error", containsString("steuern dasselbe Gerät"));
     }
 
     @Test

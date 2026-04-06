@@ -108,7 +108,7 @@ class RuleResourceTest {
                     "name":"Time Rule",
                     "triggerType":"TIME_BASED",
                     "triggerCondition":"0 8 * * *",
-                    "actionDeviceId":1,
+                    "actionDeviceId":2,
                     "actionValue":"true",
                     "active":true,
                     "userId":1
