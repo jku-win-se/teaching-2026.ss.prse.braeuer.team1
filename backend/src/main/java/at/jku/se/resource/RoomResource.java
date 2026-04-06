@@ -31,7 +31,6 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * REST resource for room management (FR-03).
@@ -73,7 +72,7 @@ public class RoomResource {
         }
         List<RoomResponse> result = rooms.stream()
                 .map(RoomMapper::toResponse)
-                .collect(Collectors.toList());
+                .toList();
         return Response.ok(result).build();
     }
 
@@ -152,7 +151,7 @@ public class RoomResource {
         }
         List<DeviceResponse> result = deviceRepo.findByRoom(room).stream()
                 .map(DeviceMapper::toResponse)
-                .collect(Collectors.toList());
+                .toList();
         return Response.ok(result).build();
     }
 

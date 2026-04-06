@@ -29,7 +29,6 @@ import jakarta.ws.rs.core.Response;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * REST resource for IF-THEN automation rules (FR-10, FR-11).
@@ -74,7 +73,7 @@ public class RuleResource {
         }
         List<RuleResponse> result = rules.stream()
                 .map(RuleMapper::toResponse)
-                .collect(Collectors.toList());
+                .toList();
         return Response.ok(result).build();
     }
 
