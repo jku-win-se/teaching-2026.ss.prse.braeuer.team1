@@ -20,7 +20,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * REST resource for in-app notifications (FR-12).
@@ -63,7 +62,7 @@ public class NotificationResource {
                 : notifRepo.findAllByUser(user);
         List<NotificationResponse> result = notifications.stream()
                 .map(NotificationMapper::toResponse)
-                .collect(Collectors.toList());
+                .toList();
         return Response.ok(result).build();
     }
 

@@ -17,7 +17,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * REST resource for reading activity logs and CSV export (FR-08, FR-16).
@@ -68,7 +67,7 @@ public class ActivityLogResource {
         }
         List<ActivityLogResponse> result = logs.stream()
                 .map(ActivityLogMapper::toResponse)
-                .collect(Collectors.toList());
+                .toList();
         return Response.ok(result).build();
     }
 

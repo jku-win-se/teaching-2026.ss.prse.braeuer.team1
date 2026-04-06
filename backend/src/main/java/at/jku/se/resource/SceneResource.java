@@ -33,7 +33,6 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * REST resource for scene management and activation (FR-17).
@@ -81,7 +80,7 @@ public class SceneResource {
         }
         List<SceneResponse> result = scenes.stream()
                 .map(SceneMapper::toResponse)
-                .collect(Collectors.toList());
+                .toList();
         return Response.ok(result).build();
     }
 

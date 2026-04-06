@@ -28,7 +28,6 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * REST resource for user management.
@@ -58,7 +57,7 @@ public class UserResource {
     public List<UserResponse> listAll() {
         return userRepo.listAll().stream()
                 .map(UserMapper::toResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
