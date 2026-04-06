@@ -55,9 +55,16 @@ coverage/
 *.lcov
 
 # =========================
+# Docker
+# =========================
+docker-compose.override.yml
+
+# =========================
 # temporary files
 # =========================
 tmp/
 temp/
 *.tmp
 *.swp
+*.bak
+*~
