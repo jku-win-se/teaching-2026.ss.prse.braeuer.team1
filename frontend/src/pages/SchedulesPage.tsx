@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { useAuth } from "@/contexts/AuthContext";
-import type { Schedule, Device, Room } from "@/types/types";
+import type { Schedule, Device, Room, Conflict } from "@/types/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, CalendarClock } from "lucide-react";
+import { Plus, Pencil, Trash2, CalendarClock, AlertTriangle } from "lucide-react";
 
 /** Translates a 5-field cron expression into a human-readable German string. */
 function cronToHuman(cron: string): string {
@@ -57,6 +57,7 @@ export default function SchedulesPage() {
   const { user, isOwner } = useAuth();
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [devices, setDevices] = useState<Device[]>([]);
+  const [conflicts, setConflicts] = useState<Conflict[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -65,6 +66,16 @@ export default function SchedulesPage() {
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deletingSchedule, setDeletingSchedule] = useState<Schedule | null>(null);
+
+  const fetchConflicts = async () => {
+    if (!user) return;
+    try {
+      const all = await api.get<Conflict[]>(`/conflicts?userId=${user.id}`);
+      setConflicts(all.filter((c) => c.conflictType.includes("SCHEDULE")));
+    } catch {
+      // ignore — conflicts are non-critical
+    }
+  };
 
   const fetchData = async () => {
     if (!user) return;
@@ -82,6 +93,7 @@ export default function SchedulesPage() {
         })
       );
       setDevices(devs);
+      fetchConflicts();
     } catch {
       toast.error("Zeitpläne konnten nicht geladen werden.");
     } finally {
@@ -201,6 +213,24 @@ export default function SchedulesPage() {
           Neuer Zeitplan
         </Button>
       </div>
+
+      {conflicts.length > 0 && (
+        <Card className="border-yellow-500 bg-yellow-50 dark:bg-yellow-950/20">
+          <CardContent className="flex items-start gap-3 py-4">
+            <AlertTriangle className="mt-0.5 size-5 shrink-0 text-yellow-600" />
+            <div className="space-y-1">
+              <p className="font-medium text-yellow-800 dark:text-yellow-400">
+                Konflikte erkannt
+              </p>
+              {conflicts.map((c, i) => (
+                <p key={i} className="text-sm text-yellow-700 dark:text-yellow-500">
+                  {c.message}
+                </p>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {schedules.length === 0 ? (
         <Card>

@@ -1,6 +1,7 @@
 package at.jku.se.resource;
 
 import at.jku.se.dto.request.ScheduleRequest;
+import at.jku.se.dto.response.ConflictResponse;
 import at.jku.se.dto.response.ScheduleResponse;
 import at.jku.se.entity.Device;
 import at.jku.se.entity.Schedule;
@@ -9,6 +10,7 @@ import at.jku.se.mapper.ScheduleMapper;
 import at.jku.se.repository.DeviceRepository;
 import at.jku.se.repository.ScheduleRepository;
 import at.jku.se.repository.UserRepository;
+import at.jku.se.service.ConflictDetectionService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -47,6 +49,9 @@ public class ScheduleResource {
 
     @Inject
     UserRepository userRepo;
+
+    @Inject
+    ConflictDetectionService conflictService;
 
     /**
      * Lists schedules. Optionally filtered by userId.
@@ -110,19 +115,6 @@ public class ScheduleResource {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(Map.of("error", "Device not found")).build();
         }
-        // FR-15: Conflict detection — same device + same cron + both active
-        if (Boolean.TRUE.equals(request.active)) {
-            boolean conflict = scheduleRepo.find(
-                    "device = ?1 AND cronExpression = ?2 AND active = true",
-                    device, request.cronExpression).count() > 0;
-            if (conflict) {
-                return Response.status(Response.Status.CONFLICT)
-                        .entity(Map.of("error",
-                                "Scheduling conflict: another active schedule already targets this "
-                                        + "device at the same time (" + request.cronExpression + ")"))
-                        .build();
-            }
-        }
         Schedule schedule = new Schedule();
         schedule.name = request.name;
         schedule.cronExpression = request.cronExpression;
@@ -130,6 +122,14 @@ public class ScheduleResource {
         schedule.actionValue = request.actionValue;
         schedule.active = request.active;
         schedule.user = user;
+        // FR-15: Conflict detection via ConflictDetectionService
+        if (Boolean.TRUE.equals(request.active)) {
+            List<ConflictResponse> conflicts = conflictService.checkScheduleConflicts(schedule, null);
+            if (!conflicts.isEmpty()) {
+                return Response.status(Response.Status.CONFLICT)
+                        .entity(Map.of("error", conflicts.get(0).message)).build();
+            }
+        }
         scheduleRepo.persist(schedule);
         return Response.created(URI.create("/api/schedules/" + schedule.id))
                 .entity(ScheduleMapper.toResponse(schedule)).build();
@@ -157,24 +157,19 @@ public class ScheduleResource {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity(Map.of("error", "Device not found")).build();
         }
-        // FR-15: Conflict detection — exclude the current schedule from the check
-        if (Boolean.TRUE.equals(request.active)) {
-            boolean conflict = scheduleRepo.find(
-                    "device = ?1 AND cronExpression = ?2 AND active = true AND id != ?3",
-                    device, request.cronExpression, id).count() > 0;
-            if (conflict) {
-                return Response.status(Response.Status.CONFLICT)
-                        .entity(Map.of("error",
-                                "Scheduling conflict: another active schedule already targets this "
-                                        + "device at the same time (" + request.cronExpression + ")"))
-                        .build();
-            }
-        }
         schedule.name = request.name;
         schedule.cronExpression = request.cronExpression;
         schedule.device = device;
         schedule.actionValue = request.actionValue;
         schedule.active = request.active;
+        // FR-15: Conflict detection — exclude current schedule
+        if (Boolean.TRUE.equals(request.active)) {
+            List<ConflictResponse> conflicts = conflictService.checkScheduleConflicts(schedule, id);
+            if (!conflicts.isEmpty()) {
+                return Response.status(Response.Status.CONFLICT)
+                        .entity(Map.of("error", conflicts.get(0).message)).build();
+            }
+        }
         return Response.ok(ScheduleMapper.toResponse(schedule)).build();
     }
 
