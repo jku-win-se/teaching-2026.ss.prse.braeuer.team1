@@ -3,6 +3,7 @@ package at.jku.se.entity;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -15,7 +16,10 @@ import java.time.LocalDateTime;
  * Used as the source of truth for CSV export (FR-16) and the activity feed in the UI.
  */
 @Entity
-@Table(name = "activity_logs")
+@Table(name = "activity_logs", indexes = {
+        @Index(name = "idx_activity_log_timestamp", columnList = "timestamp"),
+        @Index(name = "idx_activity_log_device_id", columnList = "device_id")
+})
 public class ActivityLog extends PanacheEntity {
 
     /** The device whose state changed. Deleted automatically when the device is removed. */

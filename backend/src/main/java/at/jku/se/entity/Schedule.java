@@ -3,6 +3,7 @@ package at.jku.se.entity;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -15,7 +16,9 @@ import org.hibernate.annotations.OnDeleteAction;
  * specified time. Also used as the applied plan for vacation mode (FR-21).
  */
 @Entity
-@Table(name = "schedules")
+@Table(name = "schedules", indexes = {
+        @Index(name = "idx_schedule_device_active", columnList = "device_id, active")
+})
 public class Schedule extends PanacheEntity {
 
     /** Descriptive name for the schedule (e.g., "Morning Lights"). */
