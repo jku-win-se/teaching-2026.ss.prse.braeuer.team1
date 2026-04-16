@@ -1,11 +1,9 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { api } from "@/services/api";
-import { useDeviceWebSocket } from "@/hooks/useDeviceWebSocket";
 import type { Device } from "@/types/types";
-import { Badge } from "@/components/ui/badge";
-import { DoorOpen, Lightbulb, Zap, ShieldCheck, Clock, Activity, Wifi, WifiOff } from "lucide-react";
+import { DoorOpen, Lightbulb, Zap, ShieldCheck, Clock, Activity } from "lucide-react";
 
 interface Room {
   id: number;
@@ -36,11 +34,6 @@ interface ActivityLog {
   timestamp: string;
 }
 
-interface IoTStatus {
-  connected: boolean;
-  protocol: string;
-}
-
 export default function DashboardPage() {
   const { user, isOwner } = useAuth();
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -49,18 +42,11 @@ export default function DashboardPage() {
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [energy, setEnergy] = useState<EnergyDashboard | null>(null);
   const [recentActivity, setRecentActivity] = useState<ActivityLog[]>([]);
-  const [iotStatus, setIoTStatus] = useState<IoTStatus | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadDashboard();
   }, []);
-
-  const handleWebSocketUpdate = useCallback((updatedDevice: Device) => {
-    setDevices((prev) => prev.map((d) => (d.id === updatedDevice.id ? updatedDevice : d)));
-  }, []);
-
-  useDeviceWebSocket(handleWebSocketUpdate);
 
   async function loadDashboard() {
     try {
@@ -88,7 +74,6 @@ export default function DashboardPage() {
         .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
         .slice(0, 5);
       setRecentActivity(sorted);
-      api.get<IoTStatus>("/iot/status").then(setIoTStatus).catch(() => null);
     } catch {
       /* empty */
     } finally {
@@ -127,12 +112,6 @@ export default function DashboardPage() {
         <h1 className="text-3xl font-bold">
           Willkommen, {user?.email?.split("@")[0]}
         </h1>
-        {iotStatus && (
-          <Badge variant={iotStatus.connected ? "default" : "secondary"} className="flex items-center gap-1.5 px-3 py-1">
-            {iotStatus.connected ? <Wifi className="h-3.5 w-3.5" /> : <WifiOff className="h-3.5 w-3.5" />}
-            IoT: {iotStatus.protocol} {iotStatus.connected ? "Connected" : "Disconnected"}
-          </Badge>
-        )}
       </div>
 
       {/* Summary Cards */}
