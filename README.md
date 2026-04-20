@@ -66,8 +66,18 @@ Nach dem Start sind folgende Services erreichbar:
 | PostgreSQL | `localhost:5432`           | Datenbank (User: `prse`) |
 
 > **Hinweis:** Beim Start wird automatisch ein `StartupDataLoader` ausgefuehrt, der initiale Testdaten (Benutzer, Raeume, Geraete) in die Datenbank laedt. Die Datenbank wird bei jedem Neustart zurueckgesetzt (`drop-and-create`).
+>
+> **Wichtig:** Docker Compose sollte mindestens einmal zuerst gestartet werden, damit Backend und Datenbank initialisieren und die Tabellen angelegt werden.
+>
+> **Hinweis fuer lokale Entwicklung:** Wenn du mit Docker Compose arbeitest, werden Frontend und Backend bereits gebaut und gestartet. Du musst die Projekte dann nicht zusaetzlich lokal starten.
 
 ### Einzelne Services fuer die Entwicklung
+
+Diese Option ist fuer direkte lokale Entwicklung in den Projektordnern gedacht.
+
+1. Datenbank starten (z. B. `docker compose up -d postgres`).
+2. Backend lokal starten.
+3. Frontend lokal starten.
 
 **Backend (Quarkus Dev Mode):**
 ```bash
