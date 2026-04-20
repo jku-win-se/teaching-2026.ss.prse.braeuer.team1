@@ -52,6 +52,53 @@ function levelLabel(type: DeviceType): string {
   }
 }
 
+function DeviceLevelSlider({
+  device,
+  onCommit,
+}: {
+  device: Device;
+  onCommit: (value: number) => void;
+}) {
+  const [draft, setDraft] = useState<number | null>(null);
+  const [syncedLevel, setSyncedLevel] = useState(device.level);
+
+  if (device.level !== syncedLevel) {
+    setSyncedLevel(device.level);
+    setDraft(null);
+  }
+
+  const isThermostat = device.type === "THERMOSTAT";
+  const currentLevel = device.level ?? 0;
+  const displayValue = draft ?? currentLevel;
+
+  const commit = () => {
+    if (draft !== null && draft !== currentLevel) {
+      onCommit(draft);
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <Label className="text-sm">{levelLabel(device.type)}</Label>
+        <span className="text-sm font-medium">{displayValue}</span>
+      </div>
+      <input
+        type="range"
+        min={isThermostat ? 5 : 0}
+        max={isThermostat ? 35 : 100}
+        step={isThermostat ? 0.5 : 1}
+        value={displayValue}
+        onChange={(e) => setDraft(Number(e.target.value))}
+        onMouseUp={commit}
+        onTouchEnd={commit}
+        onKeyUp={commit}
+        className="w-full accent-primary"
+      />
+    </div>
+  );
+}
+
 export default function DevicesPage() {
   const { user, isOwner } = useAuth();
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -187,23 +234,12 @@ export default function DevicesPage() {
                       )}
 
                       {device.type !== "SWITCH" && (
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <Label className="text-sm">{levelLabel(device.type)}</Label>
-                            <span className="text-sm font-medium">{device.level ?? 0}</span>
-                          </div>
-                          <input
-                            type="range"
-                            min={device.type === "THERMOSTAT" ? 5 : 0}
-                            max={device.type === "THERMOSTAT" ? 35 : 100}
-                            step={device.type === "THERMOSTAT" ? 0.5 : 1}
-                            value={device.level ?? 0}
-                            onChange={(e) =>
-                              updateDeviceState(device, device.switchedOn ?? undefined, Number(e.target.value))
-                            }
-                            className="w-full accent-primary"
-                          />
-                        </div>
+                        <DeviceLevelSlider
+                          device={device}
+                          onCommit={(value) =>
+                            updateDeviceState(device, device.switchedOn ?? undefined, value)
+                          }
+                        />
                       )}
 
                       {device.updatedAt && (
