@@ -13,6 +13,9 @@ jobs:
 
     permissions:
       contents: write
+      checks: write
+      pull-requests: write
+      issues: read
 
     # Setzt das Arbeitsverzeichnis für alle 'run' Befehle auf den backend-Ordner
     defaults:
@@ -67,7 +70,7 @@ jobs:
           git add .github/badges/jacoco.svg
           if ! git diff --staged --quiet; then
             git commit -m "chore: update JaCoCo coverage badge [skip ci]"
-            git push
+            git push origin HEAD:main
           fi
 
       - name: PMD static analysis
