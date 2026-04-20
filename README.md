@@ -68,7 +68,7 @@ steht im Benutzerhandbuch:
 
 ## Dokumentation der Anforderungen
 
-- [Anforderungsdokument](docs/requirements_smarthome_de.md)
+- [Anforderungsdokument](docs/requirements/requirements_smarthome_de.md)
 
 
 
