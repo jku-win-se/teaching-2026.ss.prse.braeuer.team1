@@ -12,6 +12,19 @@ Primäre Zielgruppen sind:
 
 Die Anwendung ist besonders geeignet für kleine bis mittlere Haushalte, in denen mehrere Personen gemeinsam auf ein Smart-Home-System zugreifen und dabei eine klare Rollenverteilung benötigen.
 
+## Voraussetzungen
+
+Bevor das Projekt gestartet werden kann, muessen folgende Tools installiert sein:
+
+- [ ] **Docker** (inkl. Docker Compose) -- [docker.com](https://www.docker.com/)
+- [ ] **Git** -- zum Klonen des Repositories
+
+Fuer die lokale Entwicklung zusaetzlich:
+
+- [ ] **JDK 21** -- z.B. Eclipse Temurin oder Oracle JDK
+- [ ] **Maven 3.9+** -- oder den enthaltenen Maven Wrapper (`./mvnw`) verwenden
+- [ ] **Node.js 22+** und **npm** -- fuer das Frontend
+
 ## Installation und Start
 
 Es gibt zwei gleichwertige Optionen zum Starten der Anwendung.

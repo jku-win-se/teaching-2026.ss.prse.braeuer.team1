@@ -12,12 +12,19 @@ Echtzeit-Statusupdates und Auswertungen für den Energieverbrauch.
 ## Architektur
 
 - UI: Frontend als React-Anwendung im Ordner frontend (Vite, TypeScript, Tailwind CSS).
+
 - Domänenlogik: Geschäftslogik im Backend mit klarer Ordnerstruktur:
-	resource (REST-Endpunkte), service (Geschäftslogik), repository (Datenzugriff),
-	entity (Domänenobjekte), dto (Request/Response-Modelle), mapper (Entity-DTO-Mapping),
-	websocket (Echtzeitkommunikation) und iot (Integrationsschicht).
-	Für die Persistenz wird Hibernate ORM Panache genutzt:
-	Entities basieren auf PanacheEntity, Repositories auf PanacheRepository.
+
+```
+resource/   --> REST-Endpunkte (JAX-RS)
+service/    --> Business-Logik
+repository/ --> Datenzugriff (Panache)
+entity/     --> JPA-Entities
+dto/        --> Data Transfer Objects
+mapper/     --> Entity <-> DTO Mapping
+websocket/  --> Echtzeit-Kommunikation
+iot/        --> IoT-Integrationsschicht (MQTT)
+```
 
 Die Anwendung folgt einer Three-Tier-Architektur:
 
@@ -44,13 +51,28 @@ Die Anwendung folgt einer Three-Tier-Architektur:
 - Neue REST-Endpunkte und DTOs für zusätzliche Fachfunktionen hinzufügen.
 - Zusätzliche Unit- und Integrationstests ergänzen.
 
-## Build und Qualität
+## Build und Qualitaetssicherung
 
-- Build-Tool: Maven
-- Tests: JUnit
-- Statische Analyse: PMD
+| Tool        | Zweck                                  |
+|-------------|----------------------------------------|
+| **Maven**   | Build-Management und Dependency-Management |
+| **JUnit 5** | Unit- und Integrationstests            |
+| **JaCoCo**  | Code-Coverage-Analyse                  |
+| **PMD**     | Statische Code-Analyse                 |
+| **ESLint**  | Linting fuer das Frontend              |
 
-Ergänzend werden im Frontend npm-basierte Builds sowie ESLint genutzt.
+**Tests ausfuehren:**
+```bash
+cd backend
+./mvnw verify
+```
+
+**Frontend Lint:**
+```bash
+cd frontend
+npm run lint
+```
+
 
 ## Testfallbeschreibung und Testabdeckung
 
