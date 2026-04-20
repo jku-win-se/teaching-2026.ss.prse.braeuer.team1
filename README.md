@@ -1,3 +1,7 @@
+![Build Status](https://github.com/user/repo/actions/workflows/maven.yml/badge.svg)
+![Coverage](https://img.shields.io/badge/coverage-82%25-brightgreen)
+![PMD](https://img.shields.io/badge/pmd-passed-blue)
+
 # SmartHome Orchestrator
 
 Eine Heimautomatisierungsanwendung zur zentralen Verwaltung von Smart-Home-Geraeten, Automatisierungsregeln, Zeitplaenen und Energieverbrauch -- entwickelt im Rahmen des Software Engineering Praktikums (SS 2026) an der JKU Linz.
