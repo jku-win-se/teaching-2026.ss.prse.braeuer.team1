@@ -65,7 +65,7 @@ Die Bedienung erfolgt über die Weboberfläche. Eingaben werden über Formulare 
 
 ### Szenario 3: Urlaubsmodus aktivieren
 
-1. Zeitraum fuer den Urlaub festlegen.
+1. Zeitraum für den Urlaub festlegen.
 2. Ersatz-Zeitplan auswählen.
 3. Urlaubsmodus aktivieren.
 4. Normale Zeitpläne werden während des Zeitraums übersteuert.
