@@ -40,6 +40,9 @@ import java.util.Map;
 @Consumes(MediaType.APPLICATION_JSON)
 public class RuleResource {
 
+    /** Creates the resource; intended for CDI instantiation. */
+    public RuleResource() {}
+
     @Inject
     RuleRepository ruleRepo;
 

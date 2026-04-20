@@ -27,6 +27,9 @@ import java.util.Map;
 @Produces(MediaType.APPLICATION_JSON)
 public class ActivityLogResource {
 
+    /** Creates the resource; intended for CDI instantiation. */
+    public ActivityLogResource() {}
+
     @Inject
     ActivityLogRepository activityLogRepo;
 

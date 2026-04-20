@@ -12,6 +12,9 @@ import java.util.List;
 @ApplicationScoped
 public class ScheduleRepository implements PanacheRepository<Schedule> {
 
+    /** Creates the repository; intended for CDI instantiation. */
+    public ScheduleRepository() {}
+
     /**
      * Returns all schedules owned by the given user.
      *

@@ -40,6 +40,10 @@ public class StartupDataLoader {
     private static final Logger LOG = Logger.getLogger(StartupDataLoader.class);
     private static final String TEST_PASSWORD = "password123";
 
+        /** Default constructor required by CDI. */
+        public StartupDataLoader() {
+        }
+
     @Transactional
     void onStart(@Observes StartupEvent ev) {
         if (User.count() > 0) {

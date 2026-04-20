@@ -6,12 +6,15 @@ import java.time.LocalDate;
 /** Request body for activating or updating vacation mode (FR-21). */
 public class VacationModeRequest {
 
+    /** Identifier of the user for whom vacation mode is configured. */
     @NotNull
     public Long userId;
 
+    /** First day of the vacation period (inclusive). */
     @NotNull
     public LocalDate startDate;
 
+    /** Last day of the vacation period (inclusive). */
     @NotNull
     public LocalDate endDate;
 
@@ -19,6 +22,11 @@ public class VacationModeRequest {
     @NotNull
     public Long scheduleId;
 
+    /** Whether vacation mode should be active. */
     @NotNull
     public Boolean active;
+
+    /** Default constructor for deserialization frameworks. */
+    public VacationModeRequest() {
+    }
 }

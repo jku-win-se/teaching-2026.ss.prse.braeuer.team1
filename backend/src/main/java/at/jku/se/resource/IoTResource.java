@@ -19,9 +19,17 @@ import java.util.Map;
 @Produces(MediaType.APPLICATION_JSON)
 public class IoTResource {
 
+    /** Creates the resource; intended for CDI instantiation. */
+    public IoTResource() {}
+
     @Inject
     IoTIntegrationService iotService;
 
+    /**
+     * Returns the current IoT integration status.
+     *
+     * @return a JSON response with {@code connected} flag and active {@code protocol} name
+     */
     @GET
     @Path("/status")
     public Response getStatus() {

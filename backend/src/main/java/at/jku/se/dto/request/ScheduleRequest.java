@@ -6,6 +6,10 @@ import jakarta.validation.constraints.NotNull;
 /** Request body for creating or updating a time-based schedule (FR-09). */
 public class ScheduleRequest {
 
+    /** Creates an empty request; fields are populated during deserialization. */
+    public ScheduleRequest() {}
+
+    /** Display name of the schedule. */
     @NotBlank
     public String name;
 
@@ -16,6 +20,7 @@ public class ScheduleRequest {
     @NotBlank
     public String cronExpression;
 
+    /** Identifier of the target device. */
     @NotNull
     public Long deviceId;
 
@@ -26,9 +31,11 @@ public class ScheduleRequest {
     @NotBlank
     public String actionValue;
 
+    /** Whether the schedule is active and should fire. */
     @NotNull
     public Boolean active;
 
+    /** Identifier of the owning user. */
     @NotNull
     public Long userId;
 }

@@ -16,6 +16,9 @@ import java.util.logging.Logger;
 @ApplicationScoped
 public class IoTProtocolFactory {
 
+    /** Creates the factory; intended for CDI instantiation. */
+    public IoTProtocolFactory() {}
+
     private static final Logger LOG = Logger.getLogger(IoTProtocolFactory.class.getName());
 
     @ConfigProperty(name = "iot.protocol", defaultValue = "mock")
@@ -24,6 +27,11 @@ public class IoTProtocolFactory {
     @ConfigProperty(name = "iot.mqtt.broker-url", defaultValue = "tcp://localhost:1883")
     String mqttBrokerUrl;
 
+    /**
+     * Instantiates the configured IoT protocol adapter.
+     *
+     * @return a new protocol adapter based on the {@code iot.protocol} configuration
+     */
     public IoTProtocol create() {
         return switch (protocol.toLowerCase()) {
             case "mqtt" -> {

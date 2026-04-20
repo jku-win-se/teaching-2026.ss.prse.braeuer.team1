@@ -7,9 +7,14 @@ import jakarta.validation.constraints.NotNull;
 /** Request body for adding a new virtual device to a room (FR-04). */
 public class DeviceCreateRequest {
 
+    /** Creates an empty request; fields are populated during deserialization. */
+    public DeviceCreateRequest() {}
+
+    /** Display name for the new device. */
     @NotBlank
     public String name;
 
+    /** Device category (SWITCH, DIMMER, THERMOSTAT, SENSOR, BLIND). */
     @NotNull
     public DeviceType type;
 

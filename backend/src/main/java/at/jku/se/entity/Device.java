@@ -25,6 +25,9 @@ import java.time.LocalDateTime;
 @Table(name = "devices")
 public class Device extends PanacheEntity {
 
+    /** Creates an empty entity; fields are populated before persisting. */
+    public Device() {}
+
     /** Human-readable name of the device. */
     @Column(nullable = false)
     public String name;

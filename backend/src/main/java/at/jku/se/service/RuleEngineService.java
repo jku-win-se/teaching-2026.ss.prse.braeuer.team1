@@ -26,6 +26,9 @@ import java.util.logging.Logger;
 @ApplicationScoped
 public class RuleEngineService {
 
+    /** Creates the service; intended for CDI instantiation. */
+    public RuleEngineService() {}
+
     private static final Logger LOG = Logger.getLogger(RuleEngineService.class.getName());
 
     @Inject

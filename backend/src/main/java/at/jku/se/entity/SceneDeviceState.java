@@ -17,6 +17,9 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "scene_device_states")
 public class SceneDeviceState extends PanacheEntity {
 
+    /** Creates an empty entity; fields are populated before persisting. */
+    public SceneDeviceState() {}
+
     /** The scene this entry belongs to. */
     @ManyToOne(optional = false)
     @JoinColumn(name = "scene_id", nullable = false)

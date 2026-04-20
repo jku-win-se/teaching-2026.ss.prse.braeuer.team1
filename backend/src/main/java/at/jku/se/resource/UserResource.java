@@ -48,6 +48,10 @@ public class UserResource {
     @Inject
     VacationModeRepository vacationRepo;
 
+    /** Default constructor required by CDI. */
+    public UserResource() {
+    }
+
     /**
      * Returns all registered users.
      *

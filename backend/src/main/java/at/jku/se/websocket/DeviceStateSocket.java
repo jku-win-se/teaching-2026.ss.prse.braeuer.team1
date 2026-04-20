@@ -17,11 +17,15 @@ import java.util.logging.Logger;
 @WebSocket(path = "/ws/devices")
 public class DeviceStateSocket {
 
+    /** Creates the socket endpoint; intended for CDI instantiation. */
+    public DeviceStateSocket() {}
+
     private static final Logger LOG = Logger.getLogger(DeviceStateSocket.class.getName());
 
     @Inject
     WebSocketConnection connection;
 
+    /** Callback invoked when a new client connects to the socket. */
     @OnOpen
     public void onOpen() {
         if (LOG.isLoggable(Level.INFO)) {
@@ -29,6 +33,7 @@ public class DeviceStateSocket {
         }
     }
 
+    /** Callback invoked when a client disconnects from the socket. */
     @OnClose
     public void onClose() {
         if (LOG.isLoggable(Level.INFO)) {

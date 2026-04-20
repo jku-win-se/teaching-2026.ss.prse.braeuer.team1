@@ -27,6 +27,9 @@ import java.util.Map;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ConflictResource {
 
+    /** Creates the resource; intended for CDI instantiation. */
+    public ConflictResource() {}
+
     @Inject
     ConflictDetectionService conflictService;
 

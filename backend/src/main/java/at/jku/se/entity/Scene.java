@@ -19,6 +19,9 @@ import java.util.List;
 @Table(name = "scenes")
 public class Scene extends PanacheEntity {
 
+    /** Creates an empty entity; fields are populated before persisting. */
+    public Scene() {}
+
     /** Display name of the scene (e.g., "Movie Night"). */
     @Column(nullable = false)
     public String name;

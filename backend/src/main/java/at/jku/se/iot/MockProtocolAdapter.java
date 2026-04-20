@@ -15,6 +15,9 @@ import java.util.logging.Logger;
  */
 public class MockProtocolAdapter implements IoTProtocol {
 
+    /** Creates a disconnected mock adapter instance. */
+    public MockProtocolAdapter() {}
+
     private static final Logger LOG = Logger.getLogger(MockProtocolAdapter.class.getName());
 
     private boolean connected = false;
@@ -75,14 +78,26 @@ public class MockProtocolAdapter implements IoTProtocol {
         return "MOCK";
     }
 
+    /**
+     * Returns an immutable snapshot of all commands sent through this adapter.
+     *
+     * @return the recorded commands
+     */
     public List<DeviceCommand> getSentCommands() {
         return Collections.unmodifiableList(sentCommands);
     }
 
+    /** Clears the recorded command history. */
     public void clearCommands() {
         sentCommands.clear();
     }
 
+    /**
+     * Simulates an incoming event on the given topic for testing.
+     *
+     * @param topic the topic whose subscriber should receive the event
+     * @param event the event to deliver
+     */
     public void simulateEvent(String topic, DeviceEvent event) {
         Consumer<DeviceEvent> listener = subscriptions.get(topic);
         if (listener != null) {

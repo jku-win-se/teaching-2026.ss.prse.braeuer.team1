@@ -47,6 +47,10 @@ public class VacationModeResource {
     @Inject
     ScheduleRepository scheduleRepo;
 
+    /** Default constructor required by CDI. */
+    public VacationModeResource() {
+    }
+
     /**
      * Lists vacation mode configurations. Optionally filtered by userId.
      *

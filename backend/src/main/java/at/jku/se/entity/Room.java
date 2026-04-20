@@ -19,6 +19,9 @@ import java.util.List;
 @Table(name = "rooms")
 public class Room extends PanacheEntity {
 
+    /** Creates an empty entity; fields are populated before persisting. */
+    public Room() {}
+
     /** Display name of the room. */
     @Column(nullable = false)
     public String name;

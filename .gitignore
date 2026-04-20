@@ -68,3 +68,37 @@ temp/
 *.swp
 *.bak
 *~
+
+# =========================
+# Backend (Quarkus/Maven)
+# =========================
+backend/pom.xml.tag
+backend/pom.xml.releaseBackup
+backend/pom.xml.versionsBackup
+backend/release.properties
+backend/.flattened-pom.xml
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/bin/
+backend/nb-configuration.xml
+backend/.factorypath
+backend/*.orig
+backend/*.rej
+backend/.quarkus/cli/plugins/
+backend/.certs/
+
+# =========================
+# Frontend (Vite/Node)
+# =========================
+frontend/logs
+frontend/dist-ssr
+frontend/*.local
+frontend/lerna-debug.log*
+frontend/*.suo
+frontend/*.ntvs*
+frontend/*.njsproj
+frontend/*.sln
+frontend/.vscode/*
+!frontend/.vscode/extensions.json
+frontend/*.sw?

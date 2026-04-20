@@ -10,12 +10,16 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
- * Represents a registered user of the SmartHome Orchestrator.
+ * Represents a registered user of the SmartHome.
  * Supports two roles: OWNER (full access) and MEMBER (control only).
  */
 @Entity
 @Table(name = "users")
 public class User extends PanacheEntity {
+
+    /** Default constructor required by JPA. */
+    public User() {
+    }
 
     /** Unique email address used for login and invitations. */
     @Column(nullable = false, unique = true)

@@ -12,6 +12,9 @@ import java.util.List;
 @ApplicationScoped
 public class RoomRepository implements PanacheRepository<Room> {
 
+    /** Creates the repository; intended for CDI instantiation. */
+    public RoomRepository() {}
+
     /**
      * Returns all rooms owned by the given user.
      *

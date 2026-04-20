@@ -18,6 +18,9 @@ import java.util.logging.Logger;
 @ApplicationScoped
 public class IoTIntegrationService {
 
+    /** Creates the service; intended for CDI instantiation. */
+    public IoTIntegrationService() {}
+
     private static final Logger LOG = Logger.getLogger(IoTIntegrationService.class.getName());
 
     @Inject
@@ -46,6 +49,8 @@ public class IoTIntegrationService {
 
     /**
      * Sends the current device state to the physical hardware via the configured IoT protocol.
+     *
+     * @param device the device whose state should be pushed
      */
     public void pushStateToHardware(Device device) {
         if (protocol == null || !protocol.isConnected()) {
@@ -65,6 +70,8 @@ public class IoTIntegrationService {
 
     /**
      * Subscribes to hardware events for a specific device.
+     *
+     * @param deviceId the identifier of the device to subscribe to
      */
     public void subscribeToDevice(Long deviceId) {
         if (protocol == null || !protocol.isConnected()) {
@@ -85,6 +92,8 @@ public class IoTIntegrationService {
 
     /**
      * Unsubscribes from hardware events for a specific device.
+     *
+     * @param deviceId the identifier of the device to unsubscribe from
      */
     public void unsubscribeFromDevice(Long deviceId) {
         if (protocol == null || !protocol.isConnected()) {
@@ -99,10 +108,20 @@ public class IoTIntegrationService {
         }
     }
 
+    /**
+     * Indicates whether the underlying protocol adapter is connected.
+     *
+     * @return {@code true} if connected, {@code false} otherwise
+     */
     public boolean isConnected() {
         return protocol != null && protocol.isConnected();
     }
 
+    /**
+     * Returns the identifier of the active protocol (e.g., {@code "MOCK"}, {@code "MQTT"}).
+     *
+     * @return the protocol name, or {@code "NONE"} if no protocol is active
+     */
     public String getProtocolName() {
         return protocol != null ? protocol.getProtocolName() : "NONE";
     }

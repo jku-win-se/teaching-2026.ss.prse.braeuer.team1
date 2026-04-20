@@ -22,6 +22,9 @@ import java.time.LocalDateTime;
 })
 public class ActivityLog extends PanacheEntity {
 
+    /** Creates an empty entity; fields are populated before persisting. */
+    public ActivityLog() {}
+
     /** The device whose state changed. Deleted automatically when the device is removed. */
     @ManyToOne(optional = false)
     @JoinColumn(name = "device_id", nullable = false)

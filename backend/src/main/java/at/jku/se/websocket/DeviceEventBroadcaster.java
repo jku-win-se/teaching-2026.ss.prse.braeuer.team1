@@ -17,6 +17,9 @@ import java.util.logging.Logger;
 @ApplicationScoped
 public class DeviceEventBroadcaster {
 
+    /** Creates the broadcaster; intended for CDI instantiation. */
+    public DeviceEventBroadcaster() {}
+
     private static final Logger LOG = Logger.getLogger(DeviceEventBroadcaster.class.getName());
     private static final ObjectMapper MAPPER = new ObjectMapper()
             .registerModule(new JavaTimeModule());
@@ -26,6 +29,8 @@ public class DeviceEventBroadcaster {
 
     /**
      * Sends a device state update to all connected WebSocket clients.
+     *
+     * @param device the latest device state to distribute
      */
     public void broadcastDeviceUpdate(DeviceResponse device) {
         try {
@@ -40,6 +45,9 @@ public class DeviceEventBroadcaster {
 
     /**
      * Message wrapper sent to WebSocket clients.
+     *
+     * @param type   event type identifier (e.g., {@code DEVICE_STATE_CHANGED})
+     * @param device current device state payload
      */
     public record DeviceStateMessage(String type, DeviceResponse device) {
     }

@@ -7,9 +7,14 @@ import jakarta.validation.constraints.NotNull;
 /** Request body for creating or updating an automation rule (FR-10, FR-11). */
 public class RuleRequest {
 
+    /** Creates an empty request; fields are populated during deserialization. */
+    public RuleRequest() {}
+
+    /** Display name of the rule. */
     @NotBlank
     public String name;
 
+    /** How the rule is triggered (TIME_BASED, THRESHOLD, EVENT). */
     @NotNull
     public TriggerType triggerType;
 
@@ -25,6 +30,7 @@ public class RuleRequest {
     /** For THRESHOLD: the numeric threshold value that fires the rule. */
     public Double triggerThresholdValue;
 
+    /** Identifier of the device the rule's action applies to. */
     @NotNull
     public Long actionDeviceId;
 
@@ -32,9 +38,11 @@ public class RuleRequest {
     @NotBlank
     public String actionValue;
 
+    /** Whether the rule is active and should be evaluated. */
     @NotNull
     public Boolean active;
 
+    /** Identifier of the user who owns the rule. */
     @NotNull
     public Long userId;
 }
