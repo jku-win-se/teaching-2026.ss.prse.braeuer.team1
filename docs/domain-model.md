@@ -1,4 +1,4 @@
-# SmartHome Orchestrator — Domänenmodell
+# SmartHomie — Domain Model
 
 ## Überblick
 
@@ -7,7 +7,7 @@ Neben den zentralen Entitäten werden auch API-, Service-, Integrations- und Inf
 
 ## Paketstruktur
 
-- `at.jku.se`: Initialisierung und Initialdaten
+- `at.jku.se`: Bootstrap und Initialdaten
 - `at.jku.se.dto.request`: Eingabemodelle für REST-Endpunkte
 - `at.jku.se.dto.response`: Ausgabemodelle für REST-Endpunkte
 - `at.jku.se.entity`: Persistente Domänenobjekte
@@ -159,41 +159,41 @@ classDiagram
     VacationMode "0..*" --> "1" Schedule : applies
 ```
 
-## Entitätsbeschreibungen
+## Entity Descriptions
 
-| Entität | Tabelle | Beschreibung |
+| Entity | Table | Description |
 |---|---|---|
-| `User` | `users` | Registrierter Benutzer mit Rolle OWNER oder MEMBER (FR-01, FR-13) |
-| `Room` | `rooms` | Benannte Gruppe von Geräten eines Benutzers (FR-03) |
-| `Device` | `devices` | Virtuelles Smart-Home-Gerät mit typisiertem Zustand (FR-04, FR-07) |
-| `Schedule` | `schedules` | Wiederkehrende zeitbasierte Geräteaktion per Cron-Ausdruck (FR-09) |
-| `Rule` | `rules` | IF-THEN-Automatisierung mit Zeit-, Schwellwert- oder Ereignis-Trigger (FR-10, FR-11) |
-| `Scene` | `scenes` | Benannte Menge von Gerätezielzuständen zur gemeinsamen Aktivierung (FR-17) |
-| `SceneDeviceState` | `scene_device_states` | Zielzustand eines Geräts innerhalb einer Szene |
-| `ActivityLog` | `activity_logs` | Unveränderbares Audit-Protokoll jeder Gerätezustandsänderung (FR-08) |
-| `EnergyLog` | `energy_logs` | Periodischer Energieverbrauchseintrag pro Gerät (FR-14) |
-| `Notification` | `notifications` | In-App-Benachrichtigung bei Regelausführung oder Szenenaktivierung (FR-12) |
-| `VacationMode` | `vacation_modes` | Ersatzzeitplan für einen definierten Urlaubszeitraum (FR-21) |
+| `User` | `users` | Registered user with OWNER or MEMBER role (FR-01, FR-13) |
+| `Room` | `rooms` | Named group of devices belonging to an owner (FR-03) |
+| `Device` | `devices` | Virtual smart-home device with typed state (FR-04, FR-07) |
+| `Schedule` | `schedules` | Recurring time-based device action via cron expression (FR-09) |
+| `Rule` | `rules` | IF-THEN automation: time, threshold, or event trigger (FR-10, FR-11) |
+| `Scene` | `scenes` | Named set of device target states activated in one action (FR-17) |
+| `SceneDeviceState` | `scene_device_states` | One device's target state within a scene |
+| `ActivityLog` | `activity_logs` | Immutable audit record of every device state change (FR-08) |
+| `EnergyLog` | `energy_logs` | Periodic energy consumption record per device (FR-14) |
+| `Notification` | `notifications` | In-app notification sent on rule execution or scene activation (FR-12) |
+| `VacationMode` | `vacation_modes` | Override schedule applied during a vacation date range (FR-21) |
 
-## Zentrale Geschäftsregeln
+## Key Business Rules
 
-- Ein **Room** wird zusammen mit allen zugehörigen **Device**-Einträgen gelöscht (Cascade).
-- Beim Löschen eines **Device** werden auch zugehörige **Schedule**, **ActivityLog**, **EnergyLog** und **SceneDeviceState** gelöscht.
-- Beim Löschen eines **Schedule** werden referenzierende **VacationMode**-Einträge mitgelöscht.
-- Nur Benutzer mit Rolle **OWNER** dürfen Mitglieder einladen oder entziehen (FR-20).
-- Zwei aktive **Schedule** für dasselbe **Device** mit identischem Cron-Ausdruck gelten als Konflikt (FR-15) und werden mit HTTP 409 abgelehnt.
-- Bei **VacationMode** darf `endDate` nicht vor `startDate` liegen.
-- Passwörter werden als **BCrypt**-Hash gespeichert, niemals im Klartext (NFR-02).
+- A **Room** is deleted together with all its **Devices** (cascade).
+- A **Device** deletion cascades to its **Schedules**, **ActivityLogs**, **EnergyLogs**, and **SceneDeviceStates**.
+- A **Schedule** deletion cascades to any **VacationMode** that references it.
+- Only users with role **OWNER** may invite or revoke members (FR-20).
+- Two active schedules targeting the **same device** with the **same cron expression** are a conflict (FR-15) → rejected with HTTP 409.
+- A **VacationMode** `endDate` must not be before `startDate`.
+- Passwords are stored as **BCrypt** hashes — never in plain text (NFR-02).
 
 ## Vollständige Klassenübersicht
 
-### Initialisierung
+### Bootstrap
 
 | Klasse | Beschreibung |
 |---|---|
 | `StartupDataLoader` | Initialisiert beim Start Test- und Beispieldaten für Benutzer, Räume, Geräte, Regeln und Logs. |
 
-### DTOs — Anfrage
+### DTOs — Request
 
 | Klasse | Beschreibung |
 |---|---|
@@ -201,7 +201,7 @@ classDiagram
 | `DeviceRenameRequest` | Eingabedaten zum Umbenennen eines Geräts. |
 | `DeviceStateRequest` | Eingabedaten zur manuellen Zustandsänderung eines Geräts. |
 | `EnergyLogRequest` | Eingabedaten zum Erfassen von Energieverbrauchswerten. |
-| `InviteRequest` | Eingabedaten zum Einladen eines Mitglieds durch einen OWNER. |
+| `InviteRequest` | Eingabedaten zum Einladen eines Mitglieds durch einen Owner. |
 | `RoomRequest` | Eingabedaten zum Anlegen oder Aktualisieren eines Raums. |
 | `RuleRequest` | Eingabedaten zum Erstellen oder Aktualisieren einer Automatisierungsregel. |
 | `SceneDeviceStateRequest` | Eingabedaten für den Zielzustand eines Geräts innerhalb einer Szene. |
@@ -211,7 +211,7 @@ classDiagram
 | `UserRegisterRequest` | Eingabedaten für die Benutzerregistrierung. |
 | `VacationModeRequest` | Eingabedaten für den Urlaubsmodus und dessen Zeitraum. |
 
-### DTOs — Antwort
+### DTOs — Response
 
 | Klasse | Beschreibung |
 |---|---|

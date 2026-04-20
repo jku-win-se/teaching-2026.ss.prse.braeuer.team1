@@ -44,17 +44,17 @@ Das Projekt folgt einer klassischen **Three-Tier-Architektur**, vollständig con
 Die Benutzerdokumentation mit Szenarien und Funktionsbeschreibungen, sowie die vollständige Anleitung zum Starten der Anwendung (Docker Compose und lokale Entwicklung)
 steht im Benutzerhandbuch:
 
-- [docs/user-handbook.md](docs/user-handbook.md)
+- [Benutzerdokumentation](docs/user-handbook.md)
 
 
 ## Überblick über die Applikation aus Entwicklersicht
 
-- [Systemarchitektur](docs/system-architecture.md)
+- [Systemdokumentation](docs/system-architecture.md)
 
 
 ## Domänenmodell
 
-- Datei: [docs/domain-model.md](docs/domain-model.md)
+- Datei: [Domänenmodell](docs/domain-model.md)
 - Inhalt:
 	Fachliches Domänenmodell mit Mermaid-Klassendiagramm,
 	Entitätsbeschreibungen, zentrale Geschäftsregeln und vollständige Klassenübersicht

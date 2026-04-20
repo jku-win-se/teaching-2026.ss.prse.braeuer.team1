@@ -2,7 +2,7 @@
 
 ## Überblick
 
-Der SmartHome Orchestrator ist eine Webanwendung zur zentralen Steuerung und Automatisierung eines Smart Homes.
+SmartHomie ist eine Webanwendung zur zentralen Steuerung und Automatisierung eines Smart Homes.
 Das System umfasst die Verwaltung von Benutzerinnen und Benutzern, Räumen, Geräten, Regeln, Zeitplänen, Szenen,
 Benachrichtigungen und Energieverbrauchsdaten.
 

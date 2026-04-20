@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
- * Represents a registered user of the SmartHome Orchestrator.
+ * Represents a registered user of the SmartHome.
  * Supports two roles: OWNER (full access) and MEMBER (control only).
  */
 @Entity
