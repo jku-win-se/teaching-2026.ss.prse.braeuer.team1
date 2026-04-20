@@ -82,6 +82,53 @@ npm install
 npm run dev
 ```
 
+### Build und Packaging
+
+**Backend paketieren (JVM):**
+```bash
+cd backend
+./mvnw package
+```
+
+Ausfuehrbar als JVM-Anwendung:
+```bash
+cd backend
+java -jar target/quarkus-app/quarkus-run.jar
+```
+
+**Backend als Ueber-JAR bauen:**
+```bash
+cd backend
+./mvnw package -Dquarkus.package.jar.type=uber-jar
+```
+
+**Backend Native Build (optional):**
+```bash
+cd backend
+./mvnw package -Dnative
+```
+
+Container-basierter Native Build (ohne lokale GraalVM):
+```bash
+cd backend
+./mvnw package -Dnative -Dquarkus.native.container-build=true
+```
+
+**Frontend Production Build:**
+```bash
+cd frontend
+npm install
+npm run build
+```
+
+Lokale Vorschau des Frontend-Builds:
+```bash
+cd frontend
+npm run preview
+```
+
+> **Hinweis:** Die Quarkus Dev UI ist im Dev Mode unter http://localhost:8080/q/dev/ erreichbar.
+
 ---
 
 ## Umgesetzte Anforderungen
