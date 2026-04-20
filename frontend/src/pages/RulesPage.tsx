@@ -216,6 +216,8 @@ export default function RulesPage() {
     }
   };
 
+  const deviceItems = Object.fromEntries(devices.map((d) => [d.id.toString(), d.name]));
+
   const isFormValid =
     form.name.trim() &&
     form.actionDeviceId &&
@@ -354,6 +356,7 @@ export default function RulesPage() {
               <Label>Auslöser-Typ</Label>
               <Select
                 value={form.triggerType}
+                items={TRIGGER_LABELS}
                 onValueChange={(v) =>
                   setForm({
                     ...form,
@@ -395,6 +398,7 @@ export default function RulesPage() {
                   <Label>Trigger-Gerät</Label>
                   <Select
                     value={form.triggerDeviceId}
+                    items={deviceItems}
                     onValueChange={(v) =>
                       setForm({ ...form, triggerDeviceId: v ?? "" })
                     }
@@ -445,6 +449,7 @@ export default function RulesPage() {
               <Label>Aktion-Gerät</Label>
               <Select
                 value={form.actionDeviceId}
+                items={deviceItems}
                 onValueChange={(v) => setForm({ ...form, actionDeviceId: v ?? "" })}
               >
                 <SelectTrigger>

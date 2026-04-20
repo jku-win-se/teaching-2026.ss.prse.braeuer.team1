@@ -42,6 +42,10 @@ const DEVICE_TYPE_CONFIG: Record<DeviceType, { label: string; icon: typeof Light
   BLIND: { label: "Jalousie", icon: Blinds },
 };
 
+const DEVICE_TYPE_ITEMS: Record<string, string> = Object.fromEntries(
+  Object.entries(DEVICE_TYPE_CONFIG).map(([key, cfg]) => [key, cfg.label]),
+);
+
 export default function RoomsPage() {
   const { user, isOwner } = useAuth();
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -319,7 +323,7 @@ export default function RoomsPage() {
             </div>
             <div className="space-y-2">
               <Label>Typ</Label>
-              <Select value={deviceType} onValueChange={(v) => setDeviceType(v as DeviceType)}>
+              <Select value={deviceType} items={DEVICE_TYPE_ITEMS} onValueChange={(v) => setDeviceType(v as DeviceType)}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
