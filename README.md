@@ -2,11 +2,11 @@
 [![Coverage](.github/badges/jacoco.svg)](https://github.com/jku-win-se/teaching-2026.ss.prse.braeuer.team1/actions/workflows/Continuous%20Integration.yaml)
 [![PMD](https://img.shields.io/github/actions/workflow/status/jku-win-se/teaching-2026.ss.prse.braeuer.team1/Continuous%20Integration.yaml?branch=main&label=pmd)](https://github.com/jku-win-se/teaching-2026.ss.prse.braeuer.team1/actions/workflows/Continuous%20Integration.yaml)
 
-# SmartHome Orchestrator
+# SmartHomie
 
 Eine Heimautomatisierungsanwendung zur zentralen Verwaltung von Smart-Home-Geräten, Automatisierungsregeln, Zeitplänen und Energieverbrauch -- entwickelt im Rahmen des Software Engineering Praktikums (SS 2026) an der JKU Linz.
 
----
+
 
 ## Team
 
@@ -16,7 +16,7 @@ Eine Heimautomatisierungsanwendung zur zentralen Verwaltung von Smart-Home-Gerä
 | **Benjamin Besic** | Frontend-Entwicklung, React/UI, Docker-Setup  |
 | **Felix Rieser**   | WebSocket, IoT-Integration, Simulation, Tests, Code-Qualität |
 
----
+
 
 ## Systemarchitektur
 
@@ -37,7 +37,7 @@ Das Projekt folgt einer klassischen **Three-Tier-Architektur**, vollständig con
 | **Datenbank**| PostgreSQL 17                        | Persistenz aller Domänedaten mit automatischem Schema-Management             |
 | **Infrastruktur**    | Docker Compose, nginx                | Multi-Container-Orchestrierung mit Health-Checks und Reverse-Proxy           |
 
----
+
 
 ## Startanleitung
 
@@ -46,13 +46,11 @@ steht im Benutzerhandbuch:
 
 - [docs/user-handbook.md](docs/user-handbook.md)
 
----
 
 ## Überblick über die Applikation aus Entwicklersicht
 
-- [Systemarchitektur-Dokumentation](docs/system-architecture.md)
+- [Systemarchitektur](docs/system-architecture.md)
 
----
 
 ## Domänenmodell
 
@@ -62,17 +60,15 @@ steht im Benutzerhandbuch:
 	Entitätsbeschreibungen, zentrale Geschäftsregeln und vollständige Klassenübersicht
 	über DTOs, Entitäten, Mapper, Repositories, Ressourcen, Services, IoT und WebSocket.
 
----
 
-## JavaDoc
+## Generierte API-Dokumentation
 
-- [JavaDoc (HTML)](docs/javadoc/index.html) -- Generierte API-Dokumentation für alle öffentlichen Klassen und Methoden
+- [JavaDoc (HTML)](docs/javadoc/index.html)
 
----
 
 ## Dokumentation der Anforderungen
 
-- [Anforderungsdokument](docs/requirements_smarthome_de.md) -- Vollständiges Anforderungsdokument mit allen FR/NFR
+- [Anforderungsdokument](docs/requirements_smarthome_de.md)
 
 
 
