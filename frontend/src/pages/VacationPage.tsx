@@ -173,6 +173,8 @@ export default function VacationPage() {
     return today >= v.startDate && today <= v.endDate;
   }
 
+  const scheduleItems = Object.fromEntries(schedules.map((s) => [String(s.id), s.name]));
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -235,6 +237,7 @@ export default function VacationPage() {
                 <Label>Zeitplan während Urlaub</Label>
                 <Select
                   value={form.scheduleId}
+                  items={scheduleItems}
                   onValueChange={(v) => setForm({ ...form, scheduleId: v ?? "" })}
                 >
                   <SelectTrigger>

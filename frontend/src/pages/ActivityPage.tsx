@@ -82,6 +82,15 @@ export default function ActivityPage() {
   // Unique actors for filter
   const actors = [...new Set(logs.map((l) => l.actor))].sort();
 
+  const deviceFilterItems: Record<string, string> = {
+    all: "Alle Geräte",
+    ...Object.fromEntries(devices.map((d) => [d.id.toString(), d.name])),
+  };
+  const actorFilterItems: Record<string, string> = {
+    all: "Alle Akteure",
+    ...Object.fromEntries(actors.map((a) => [a, a])),
+  };
+
   // Filtered logs
   const filtered = logs.filter((log) => {
     const matchesSearch =
@@ -162,7 +171,7 @@ export default function ActivityPage() {
                 className="pl-10"
               />
             </div>
-            <Select value={filterDevice} onValueChange={(v) => setFilterDevice(v ?? "all")}>
+            <Select value={filterDevice} items={deviceFilterItems} onValueChange={(v) => setFilterDevice(v ?? "all")}>
               <SelectTrigger className="w-full sm:w-[200px]">
                 <Filter className="h-4 w-4 mr-2" />
                 <SelectValue placeholder="Gerät filtern" />
@@ -176,7 +185,7 @@ export default function ActivityPage() {
                 ))}
               </SelectContent>
             </Select>
-            <Select value={filterActor} onValueChange={(v) => setFilterActor(v ?? "all")}>
+            <Select value={filterActor} items={actorFilterItems} onValueChange={(v) => setFilterActor(v ?? "all")}>
               <SelectTrigger className="w-full sm:w-[200px]">
                 <User className="h-4 w-4 mr-2" />
                 <SelectValue placeholder="Akteur filtern" />

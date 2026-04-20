@@ -196,6 +196,8 @@ export default function SchedulesPage() {
     }
   };
 
+  const deviceItems = Object.fromEntries(devices.map((d) => [d.id.toString(), d.name]));
+
   const isFormValid =
     form.name.trim() &&
     form.cronExpression.trim() &&
@@ -341,6 +343,7 @@ export default function SchedulesPage() {
               <Label>Gerät</Label>
               <Select
                 value={form.deviceId}
+                items={deviceItems}
                 onValueChange={(v) => setForm({ ...form, deviceId: v ?? "" })}
               >
                 <SelectTrigger>
