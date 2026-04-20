@@ -44,6 +44,9 @@ import java.util.Map;
 @Consumes(MediaType.APPLICATION_JSON)
 public class SceneResource {
 
+    /** Creates the resource; intended for CDI instantiation. */
+    public SceneResource() {}
+
     @Inject
     SceneRepository sceneRepo;
 

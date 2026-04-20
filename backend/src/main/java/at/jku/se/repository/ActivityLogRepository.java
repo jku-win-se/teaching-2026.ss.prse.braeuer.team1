@@ -13,6 +13,9 @@ import java.util.List;
 @ApplicationScoped
 public class ActivityLogRepository implements PanacheRepository<ActivityLog> {
 
+    /** Creates the repository; intended for CDI instantiation. */
+    public ActivityLogRepository() {}
+
     /**
      * Returns all activity log entries for the given device, most recent first.
      *

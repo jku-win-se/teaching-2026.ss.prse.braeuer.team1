@@ -13,6 +13,9 @@ import java.util.List;
 @ApplicationScoped
 public class RuleRepository implements PanacheRepository<Rule> {
 
+    /** Creates the repository; intended for CDI instantiation. */
+    public RuleRepository() {}
+
     /**
      * Returns all rules owned by the given user.
      *

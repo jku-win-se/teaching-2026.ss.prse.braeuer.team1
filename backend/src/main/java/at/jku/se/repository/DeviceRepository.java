@@ -12,6 +12,9 @@ import java.util.List;
 @ApplicationScoped
 public class DeviceRepository implements PanacheRepository<Device> {
 
+    /** Creates the repository; intended for CDI instantiation. */
+    public DeviceRepository() {}
+
     /**
      * Returns all devices in the given room.
      *

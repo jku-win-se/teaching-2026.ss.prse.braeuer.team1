@@ -9,8 +9,13 @@ import jakarta.validation.constraints.NotBlank;
  */
 public class DeviceStateRequest {
 
+    /** Creates an empty request; fields are populated during deserialization. */
+    public DeviceStateRequest() {}
+
+    /** Desired on/off state for SWITCH devices. */
     public Boolean switchedOn;
 
+    /** Desired analog level (dimmer %, temperature °C, sensor value, blind position %). */
     public Double level;
 
     /** The user or system component performing the action — recorded in the activity log. */

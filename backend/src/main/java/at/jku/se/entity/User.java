@@ -17,6 +17,10 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 public class User extends PanacheEntity {
 
+    /** Default constructor required by JPA. */
+    public User() {
+    }
+
     /** Unique email address used for login and invitations. */
     @Column(nullable = false, unique = true)
     public String email;

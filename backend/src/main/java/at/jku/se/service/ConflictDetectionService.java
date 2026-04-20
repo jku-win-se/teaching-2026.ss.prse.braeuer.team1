@@ -33,6 +33,9 @@ import java.util.logging.Logger;
 @ApplicationScoped
 public class ConflictDetectionService {
 
+    /** Creates the service; intended for CDI instantiation. */
+    public ConflictDetectionService() {}
+
     private static final Logger LOG = Logger.getLogger(ConflictDetectionService.class.getName());
 
     @Inject

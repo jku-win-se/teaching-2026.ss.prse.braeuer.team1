@@ -9,4 +9,8 @@ import jakarta.enterprise.context.ApplicationScoped;
  */
 @ApplicationScoped
 public class VacationModeRepository implements PanacheRepository<VacationMode> {
+
+	/** Default constructor required by CDI. */
+	public VacationModeRepository() {
+	}
 }

@@ -23,6 +23,11 @@ public class MqttProtocolAdapter implements IoTProtocol {
     private final Map<String, Consumer<DeviceEvent>> subscriptions = new ConcurrentHashMap<>();
     private boolean connected = false;
 
+    /**
+     * Creates an MQTT adapter configured for the given broker.
+     *
+     * @param brokerUrl the MQTT broker URL (e.g., {@code tcp://localhost:1883})
+     */
     public MqttProtocolAdapter(String brokerUrl) {
         this.brokerUrl = brokerUrl;
     }
@@ -93,6 +98,11 @@ public class MqttProtocolAdapter implements IoTProtocol {
         return "MQTT";
     }
 
+    /**
+     * Returns the broker URL this adapter is configured for.
+     *
+     * @return the MQTT broker URL
+     */
     public String getBrokerUrl() {
         return brokerUrl;
     }

@@ -15,6 +15,9 @@ import java.time.LocalDateTime;
 @Table(name = "notifications")
 public class Notification extends PanacheEntity {
 
+    /** Creates an empty entity; fields are populated before persisting. */
+    public Notification() {}
+
     /** The user who receives this notification. */
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)

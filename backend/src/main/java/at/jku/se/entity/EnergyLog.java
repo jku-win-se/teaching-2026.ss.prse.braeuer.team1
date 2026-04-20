@@ -19,6 +19,9 @@ import java.time.LocalDateTime;
 @Table(name = "energy_logs")
 public class EnergyLog extends PanacheEntity {
 
+    /** Creates an empty entity; fields are populated before persisting. */
+    public EnergyLog() {}
+
     /** The device this consumption record belongs to. Deleted automatically when the device is removed. */
     @ManyToOne(optional = false)
     @JoinColumn(name = "device_id", nullable = false)

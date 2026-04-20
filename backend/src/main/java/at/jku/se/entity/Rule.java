@@ -18,6 +18,9 @@ import jakarta.persistence.Table;
 @Table(name = "rules")
 public class Rule extends PanacheEntity {
 
+    /** Creates an empty entity; fields are populated before persisting. */
+    public Rule() {}
+
     /** Human-readable name for the rule (e.g., "Motion activates hallway light"). */
     @Column(nullable = false)
     public String name;

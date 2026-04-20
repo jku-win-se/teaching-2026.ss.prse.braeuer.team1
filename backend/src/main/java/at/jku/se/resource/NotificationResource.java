@@ -31,6 +31,9 @@ import java.util.Map;
 @Consumes(MediaType.APPLICATION_JSON)
 public class NotificationResource {
 
+    /** Creates the resource; intended for CDI instantiation. */
+    public NotificationResource() {}
+
     @Inject
     NotificationRepository notifRepo;
 

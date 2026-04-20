@@ -21,6 +21,9 @@ import org.hibernate.annotations.OnDeleteAction;
 })
 public class Schedule extends PanacheEntity {
 
+    /** Creates an empty entity; fields are populated before persisting. */
+    public Schedule() {}
+
     /** Descriptive name for the schedule (e.g., "Morning Lights"). */
     @Column(nullable = false)
     public String name;

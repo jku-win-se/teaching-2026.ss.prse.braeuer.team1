@@ -11,6 +11,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class UserRepository implements PanacheRepository<User> {
 
+    /** Default constructor required by CDI. */
+    public UserRepository() {
+    }
+
     /**
      * Finds a user by their unique email address.
      *

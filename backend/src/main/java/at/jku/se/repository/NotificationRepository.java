@@ -13,6 +13,9 @@ import java.util.List;
 @ApplicationScoped
 public class NotificationRepository implements PanacheRepository<Notification> {
 
+    /** Creates the repository; intended for CDI instantiation. */
+    public NotificationRepository() {}
+
     /**
      * Returns all unread notifications for the given user, most recent first.
      *

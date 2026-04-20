@@ -52,6 +52,10 @@ public class ScheduleResource {
     @Inject
     ConflictDetectionService conflictService;
 
+    /** Default constructor required by CDI. */
+    public ScheduleResource() {
+    }
+
     /**
      * Lists schedules. Optionally filtered by userId.
      *

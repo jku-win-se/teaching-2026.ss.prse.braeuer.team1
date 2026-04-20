@@ -13,6 +13,9 @@ import java.util.List;
 @ApplicationScoped
 public class EnergyLogRepository implements PanacheRepository<EnergyLog> {
 
+    /** Creates the repository; intended for CDI instantiation. */
+    public EnergyLogRepository() {}
+
     /**
      * Returns all energy log entries for all devices belonging to the given user within a time range.
      * Used to compute household-level energy aggregations for the dashboard (FR-14).

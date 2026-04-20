@@ -36,6 +36,9 @@ import java.util.Map;
 @Consumes(MediaType.APPLICATION_JSON)
 public class DeviceResource {
 
+    /** Creates the resource; intended for CDI instantiation. */
+    public DeviceResource() {}
+
     @Inject
     DeviceRepository deviceRepo;
 

@@ -7,6 +7,9 @@ package at.jku.se.dto.response;
  */
 public class ConflictResponse {
 
+    /** Creates an empty conflict response; fields are populated by the service layer. */
+    public ConflictResponse() {}
+
     /** The type of conflict: SCHEDULE_SCHEDULE, RULE_RULE, or RULE_SCHEDULE. */
     public String conflictType;
 

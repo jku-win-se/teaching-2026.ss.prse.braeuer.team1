@@ -12,6 +12,9 @@ import java.util.List;
 @ApplicationScoped
 public class SceneRepository implements PanacheRepository<Scene> {
 
+    /** Creates the repository; intended for CDI instantiation. */
+    public SceneRepository() {}
+
     /**
      * Returns all scenes owned by the given user.
      *

@@ -19,6 +19,10 @@ import java.time.LocalDate;
 @Table(name = "vacation_modes")
 public class VacationMode extends PanacheEntity {
 
+    /** Default constructor required by JPA. */
+    public VacationMode() {
+    }
+
     /** The user who activated vacation mode. */
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
