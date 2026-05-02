@@ -1,6 +1,7 @@
 [![Build](https://img.shields.io/github/actions/workflow/status/jku-win-se/teaching-2026.ss.prse.braeuer.team1/Continuous%20Integration.yaml?branch=main&label=build)](https://github.com/jku-win-se/teaching-2026.ss.prse.braeuer.team1/actions/workflows/Continuous%20Integration.yaml)
 [![Coverage](.github/badges/jacoco.svg)](https://github.com/jku-win-se/teaching-2026.ss.prse.braeuer.team1/actions/workflows/Continuous%20Integration.yaml)
 [![PMD](https://img.shields.io/github/actions/workflow/status/jku-win-se/teaching-2026.ss.prse.braeuer.team1/Continuous%20Integration.yaml?branch=main&label=pmd)](https://github.com/jku-win-se/teaching-2026.ss.prse.braeuer.team1/actions/workflows/Continuous%20Integration.yaml)
+[![CodeQL](https://img.shields.io/github/actions/workflow/status/jku-win-se/teaching-2026.ss.prse.braeuer.team1/codeql.yml?branch=main&label=codeql)](https://github.com/jku-win-se/teaching-2026.ss.prse.braeuer.team1/actions/workflows/codeql.yml)
 
 # SmartHomie
 
