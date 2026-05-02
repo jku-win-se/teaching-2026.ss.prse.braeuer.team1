@@ -118,7 +118,7 @@ export default function VacationPage() {
       toast.error("Bitte alle Felder ausfüllen.");
       return;
     }
-    if (form.endDate < form.startDate) {
+    if (form.endDate <= form.startDate) {
       toast.error("Enddatum muss nach Startdatum liegen.");
       return;
     }
