@@ -195,7 +195,7 @@ export default function VacationPage() {
           <p className="text-muted-foreground mt-1">
             {activeCount > 0 ? (
               <span className="text-primary font-semibold">
-                {activeCount} Urlaubsmodus aktiv
+                {activeCount} Urlaubsmod{activeCount === 1 ? "us" : "i"} aktiv
               </span>
             ) : (
               "Kein Urlaubsmodus aktiv"
