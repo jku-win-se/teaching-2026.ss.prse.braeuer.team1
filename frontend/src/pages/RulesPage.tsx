@@ -295,7 +295,7 @@ export default function RulesPage() {
                       {rule.triggerType === "THRESHOLD" && (
                         <>
                           {rule.triggerDeviceName} Wert{" "}
-                          {rule.triggerCondition || `≥ ${rule.triggerThresholdValue}`}
+                          {rule.triggerCondition || `≤ ${rule.triggerThresholdValue}`}
                         </>
                       )}
                       {rule.triggerType === "EVENT" && (
