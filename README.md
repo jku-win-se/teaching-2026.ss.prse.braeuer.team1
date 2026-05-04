@@ -64,7 +64,14 @@ steht im Benutzerhandbuch:
 
 ## Generierte API-Dokumentation
 
-- [JavaDoc (HTML)](docs/javadoc/index.html)
+JavaDoc wird bei Bedarf lokal generiert (nicht ins Repo eingecheckt):
+
+```bash
+cd backend
+mvn javadoc:javadoc
+```
+
+Output: `backend/target/site/apidocs/index.html` im Browser öffnen.
 
 
 ## Dokumentation der Anforderungen

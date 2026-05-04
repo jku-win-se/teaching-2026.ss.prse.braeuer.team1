@@ -105,5 +105,5 @@ Im Entwicklungsmodus kann die Datenbank bei Neustart neu erstellt werden.
 
 ### Wo finde ich API-Details?
 
-In der generierten Javadoc-Dokumentation unter docs/javadoc/index.html.
+Die JavaDoc wird lokal mit `mvn javadoc:javadoc` (im `backend/`-Verzeichnis) generiert und liegt anschließend unter `backend/target/site/apidocs/index.html`.
 
