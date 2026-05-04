@@ -28,6 +28,9 @@ hs_err_pid*
 # logs
 *.log
 
+# Generated JavaDoc (build via `mvn javadoc:javadoc`)
+docs/javadoc/
+
 # =========================
 # Node / React
 # =========================
