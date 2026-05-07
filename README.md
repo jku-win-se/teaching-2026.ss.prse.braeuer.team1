@@ -25,9 +25,9 @@ Das Projekt folgt einer klassischen **Three-Tier-Architektur**, vollständig con
 
 ```
 ┌──────────────┐       ┌──────────────────┐       ┌──────────────┐
-│   Frontend   │──────>│     Backend      │──────>│  PostgreSQL   │
-│  React/Vite  │ :3000 │  Quarkus REST    │ :8080 │   Datenbank   │
-│  (nginx)     │       │  + WebSocket     │       │               │
+│   Frontend   │──────>│     Backend      │──────>│  PostgreSQL  │
+│  React/Vite  │ :3000 │  Quarkus REST    │ :8080 │   Datenbank  │
+│  (nginx)     │       │  + WebSocket     │       │              │
 └──────────────┘       └──────────────────┘       └──────────────┘
 ```
 
