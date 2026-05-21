@@ -169,7 +169,7 @@ npm run lint
 - Wichtige Testfälle:
 	Validierung von CRUD-Abläufen für zentrale Domänenobjekte, Login- und Rollenverhalten,
 	Regeln und Zeitpläne, Konflikterkennung sowie Mapper- und Service-Logik.
-- Aktuelle Test Coverage: [![Coverage](.github/badges/jacoco.svg)](https://github.com/jku-win-se/teaching-2026.ss.prse.braeuer.team1/actions/workflows/Continuous%20Integration.yaml)
+- Aktuelle Test Coverage: [![Coverage](https://raw.githubusercontent.com/jku-win-se/teaching-2026.ss.prse.braeuer.team1/main/.github/badges/jacoco.svg)](https://github.com/jku-win-se/teaching-2026.ss.prse.braeuer.team1/actions/workflows/Continuous%20Integration.yaml)
 
 
 ## Sicherheit
