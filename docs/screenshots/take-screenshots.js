@@ -1,4 +1,10 @@
 /* eslint-disable */
+// Generates screenshots of every page in the running SmartHomie frontend
+// and writes them to the directory passed as first CLI argument.
+//
+// Usage: node take-screenshots.js <output-dir>
+// Requires: docker compose up, seed user alice@example.com / password123
+
 const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
@@ -8,75 +14,69 @@ fs.mkdirSync(OUT_DIR, { recursive: true });
 
 const BASE = 'http://localhost:3000';
 
-const PAGES = [
-  { slug: '01-login',         url: '/login',         waitFor: 'text=/E-?Mail|Login|Anmelden|Email/i' },
-  { slug: '02-register',      url: '/register',      waitFor: 'text=/Registrier|Register/i' },
-  { slug: '03-dashboard',     url: '/',              waitFor: 'main', requiresAuth: true },
-  { slug: '04-rooms',         url: '/rooms',         waitFor: 'main', requiresAuth: true },
-  { slug: '05-devices',       url: '/devices',       waitFor: 'main', requiresAuth: true },
-  { slug: '06-scenes',        url: '/scenes',        waitFor: 'main', requiresAuth: true },
-  { slug: '07-rules',         url: '/rules',         waitFor: 'main', requiresAuth: true },
-  { slug: '08-schedules',     url: '/schedules',     waitFor: 'main', requiresAuth: true },
-  { slug: '09-energy',        url: '/energy',        waitFor: 'main', requiresAuth: true },
-  { slug: '10-activity',      url: '/activity',      waitFor: 'main', requiresAuth: true },
-  { slug: '11-notifications', url: '/notifications', waitFor: 'main', requiresAuth: true },
-  { slug: '12-vacation',      url: '/vacation',      waitFor: 'main', requiresAuth: true },
-  { slug: '13-members',       url: '/members',       waitFor: 'main', requiresAuth: true },
-  { slug: '14-simulation',    url: '/simulation',    waitFor: 'main', requiresAuth: true },
+const AUTHED_PAGES = [
+  { slug: '03-dashboard',     url: '/' },
+  { slug: '04-rooms',         url: '/rooms' },
+  { slug: '05-devices',       url: '/devices' },
+  { slug: '06-scenes',        url: '/scenes' },
+  { slug: '07-rules',         url: '/rules' },
+  { slug: '08-schedules',     url: '/schedules' },
+  { slug: '09-energy',        url: '/energy' },
+  { slug: '10-activity',      url: '/activity' },
+  { slug: '11-notifications', url: '/notifications' },
+  { slug: '12-vacation',      url: '/vacation' },
+  { slug: '13-members',       url: '/members' },
+  { slug: '14-simulation',    url: '/simulation' },
 ];
+
+async function shoot(page, file) {
+  await page.waitForLoadState('networkidle').catch(() => {});
+  await page.waitForTimeout(800);
+  // fullPage:true → image height equals actual rendered content,
+  // no empty whitespace below.
+  await page.screenshot({ path: file, fullPage: true, type: 'png' });
+}
 
 (async () => {
   const browser = await chromium.launch({ headless: true });
+  // deviceScaleFactor:1 → standard web resolution (1280×800),
+  // readable PNGs that render correctly in every Markdown viewer including GitHub.
   const ctx = await browser.newContext({
-    viewport: { width: 1440, height: 900 },
-    deviceScaleFactor: 2,
+    viewport: { width: 1280, height: 800 },
+    deviceScaleFactor: 1,
   });
   const page = await ctx.newPage();
 
-  // Login flow with seeded owner
-  console.log('Login flow...');
+  console.log('01-login');
   await page.goto(BASE + '/login', { waitUntil: 'networkidle' });
-  // Capture login screen first (before filling)
-  await page.screenshot({ path: path.join(OUT_DIR, '01-login.png'), fullPage: false });
+  await shoot(page, path.join(OUT_DIR, '01-login.png'));
 
-  // Try to find email/password inputs flexibly
-  const emailInput = page.locator('input[type="email"], input[name="email"], input[placeholder*="ail" i]').first();
-  const passwordInput = page.locator('input[type="password"]').first();
-  await emailInput.waitFor({ timeout: 8000 });
-  await emailInput.fill('alice@example.com');
-  await passwordInput.fill('password123');
-  // Try to submit
-  const submitBtn = page.locator('button[type="submit"], button:has-text("Login"), button:has-text("Anmelden"), button:has-text("Sign in")').first();
-  await submitBtn.click();
+  console.log('02-register');
+  {
+    const ctx2 = await browser.newContext({
+      viewport: { width: 1280, height: 800 },
+      deviceScaleFactor: 1,
+    });
+    const p2 = await ctx2.newPage();
+    await p2.goto(BASE + '/register', { waitUntil: 'networkidle' });
+    await shoot(p2, path.join(OUT_DIR, '02-register.png'));
+    await ctx2.close();
+  }
+
+  // Login as seed owner
+  await page.locator('input[type="email"], input[name="email"]').first().fill('alice@example.com');
+  await page.locator('input[type="password"]').first().fill('password123');
+  await page.locator('button[type="submit"], button:has-text("Anmelden")').first().click();
   await page.waitForURL((url) => !url.toString().includes('/login'), { timeout: 10000 }).catch(() => {});
   await page.waitForLoadState('networkidle').catch(() => {});
 
-  for (const p of PAGES.slice(1)) {
-    if (p.url === '/register') {
-      // Open register without auth
-      const ctx2 = await browser.newContext({
-        viewport: { width: 1440, height: 900 },
-        deviceScaleFactor: 2,
-      });
-      const page2 = await ctx2.newPage();
-      try {
-        await page2.goto(BASE + p.url, { waitUntil: 'networkidle' });
-        await page2.waitForTimeout(800);
-        await page2.screenshot({ path: path.join(OUT_DIR, p.slug + '.png'), fullPage: false });
-        console.log('  ✓', p.slug);
-      } catch (e) {
-        console.log('  ✗', p.slug, e.message);
-      }
-      await ctx2.close();
-      continue;
-    }
+  for (const p of AUTHED_PAGES) {
+    console.log(p.slug);
     try {
       await page.goto(BASE + p.url, { waitUntil: 'networkidle', timeout: 15000 });
-      await page.waitForTimeout(1500);
-      await page.screenshot({ path: path.join(OUT_DIR, p.slug + '.png'), fullPage: false });
-      console.log('  ✓', p.slug);
+      await shoot(page, path.join(OUT_DIR, p.slug + '.png'));
     } catch (e) {
-      console.log('  ✗', p.slug, e.message);
+      console.log('  fail', p.slug, e.message);
     }
   }
 
