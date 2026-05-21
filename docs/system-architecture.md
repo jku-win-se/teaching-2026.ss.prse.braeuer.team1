@@ -45,11 +45,101 @@ Die Anwendung folgt einer Three-Tier-Architektur:
 - Rollenmodell Owner/Member:
 	Klare Trennung von Verwaltungsrechten und normaler Bedienung.
 
+## Eingesetzte Design Patterns
+
+Die Code-Basis verwendet etablierte Design Patterns, um Wartbarkeit, Erweiterbarkeit
+und Testbarkeit zu verbessern.
+
+### Strategy + Factory — IoT-Protokoll-Abstraktion
+
+Die Anbindung an Hardware-Protokolle erfolgt über eine Strategy-Schnittstelle
+mit einer zugehörigen Factory.
+
+- **Strategy:** `IoTProtocol` (Interface) definiert die Operationen
+  `connect`, `disconnect`, `sendCommand`, `subscribe`, `unsubscribe`.
+- **Konkrete Strategien:** `MockProtocolAdapter` (für Tests und Entwicklung) und
+  `MqttProtocolAdapter` (für reale MQTT-Broker-Anbindung).
+- **Factory:** `IoTProtocolFactory` erzeugt die jeweils konfigurierte Implementierung
+  basierend auf einer Property (`iot.protocol`).
+
+**Nutzen:** Austausch des Protokolls per Konfiguration ohne Code-Änderung in der
+Geschäftslogik. Tests laufen gegen den Mock-Adapter, Produktion gegen MQTT.
+
+### Repository — Datenzugriff
+
+Der Datenzugriff folgt dem Repository-Pattern (umgesetzt über Hibernate ORM Panache).
+
+- Jede Entity hat ein zugehöriges Repository (z. B. `DeviceRepository`,
+  `RuleRepository`, `UserRepository`).
+- Repositories kapseln Abfragen wie `findById`, `findActiveByTriggerDevice` und
+  `findByEmail`.
+- Services arbeiten ausschließlich gegen Repositories, niemals direkt gegen den
+  `EntityManager`.
+
+**Nutzen:** Klare Trennung von Persistenz und Geschäftslogik, einfaches Mocking
+in Unit-Tests (siehe `RuleEngineServiceTest`).
+
+### DTO + Mapper — Trennung von Entity und Wire-Format
+
+REST-Endpunkte arbeiten nie direkt mit JPA-Entities, sondern mit Request- und
+Response-DTOs. Die Konvertierung übernehmen dedizierte Mapper-Klassen.
+
+- **Pakete:** `dto.request`, `dto.response`, `mapper`.
+- **Beispiele:** `DeviceMapper.toResponse(Device)`,
+  `ActivityLogMapper.toResponse(ActivityLog)`.
+
+**Nutzen:** Verhindert ungewollte Datenleckage (z. B. Passwort-Hash in
+User-Responses), entkoppelt API-Schema von Datenbankschema und ermöglicht
+unabhängige Weiterentwicklung beider Schichten.
+
+### Observer — Echtzeit-Broadcasts via WebSocket
+
+Geräte-Zustandsänderungen werden in Echtzeit an alle verbundenen UI-Clients
+gepusht.
+
+- **Subject:** `DeviceEventBroadcaster` verwaltet aktive WebSocket-Sessions.
+- **Observer:** Frontend-Clients verbinden sich über `DeviceStateSocket`.
+- **Notifikation:** Services rufen `broadcaster.broadcastDeviceUpdate(device)`
+  nach jeder Zustandsänderung auf — z. B. aus der `RuleEngineService` heraus.
+
+**Nutzen:** Entkopplung der Geschäftslogik von der UI-Aktualisierung, kein
+Polling notwendig, beliebig viele Clients gleichzeitig.
+
+### Dependency Injection (CDI) — durchgehend angewendet
+
+Quarkus' CDI-Container injiziert Repositories, Services, Broadcaster und
+Konfigurationswerte über `@Inject` und `@ConfigProperty`. Dadurch werden
+Komponenten lose gekoppelt und unabhängig testbar.
+
+### Refactoring-Beispiele aus Sprint 2
+
+Auf statische Code-Analyse (PMD) folgten gezielte Refactorings:
+
+- **Extract Method** in `RuleResource.createRule` / `updateRule`:
+  Verschachtelte Null-Checks für Action- und Trigger-Device wurden in
+  `resolveDevices(...)` ausgelagert (Reduzierung der zyklomatischen Komplexität).
+- **Extract Method** in `SceneResource.createScene` / `updateScene`:
+  Inline-Schleife mit Device-Lookup wurde in `applyDeviceStates(...)` extrahiert.
+
+### Refactoring-Backlog für Sprint 3
+
+Bewusst dokumentierte, noch nicht umgesetzte Verbesserungen:
+
+- Service-Schnitt zwischen `RuleEngineService` und `ConflictDetectionService`
+  prüfen; mögliche Extraktion einer gemeinsamen `TriggerEvaluation`-Komponente.
+- Einheitliches Error-Response-DTO statt `Map.of("error", ...)` in den
+  Resource-Klassen.
+- Validierung von Request-DTOs konsequent über `@Valid` und Bean-Validation
+  statt manueller Null-Checks.
+
+
 ## Erweiterungspunkte
 
 - Zusätzliche Automatisierungsarten in der Regel-Engine ergänzen.
 - Neue REST-Endpunkte und DTOs für zusätzliche Fachfunktionen hinzufügen.
 - Zusätzliche Unit- und Integrationstests ergänzen.
+- Neue IoT-Protokolle als zusätzliche `IoTProtocol`-Implementierungen
+  (z. B. Zigbee, Z-Wave, KNX) ergänzen — ohne Eingriff in die Geschäftslogik.
 
 ## Build und Qualitaetssicherung
 
