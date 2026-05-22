@@ -171,6 +171,15 @@ npm run lint
 	Regeln und Zeitpläne, Konflikterkennung sowie Mapper- und Service-Logik.
 - Aktuelle Test Coverage: [![Coverage](https://raw.githubusercontent.com/jku-win-se/teaching-2026.ss.prse.braeuer.team1/main/.github/badges/jacoco.svg)](https://github.com/jku-win-se/teaching-2026.ss.prse.braeuer.team1/actions/workflows/Continuous%20Integration.yaml)
 
+## Performance-Verifikation
+
+Die Antwortzeit aller benutzerorientierten REST-Endpunkte wird mit einem
+reproduzierbaren Skript gemessen — siehe [`performance/`](performance/).
+Aktueller Stand bei 10 Geräten: alle 10 getesteten Endpunkte liegen mit
+ihrer p95-Latenz deutlich unter dem in NFR-01 geforderten 2-Sekunden-Limit.
+Der langsamste Endpunkt ist der Login mit ≈ 84 ms p95 (BCrypt-Hash-Prüfung),
+alle weiteren Endpunkte ≤ 10 ms p95.
+
 
 ## Sicherheit
 
