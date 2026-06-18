@@ -29,6 +29,7 @@ services:
       QUARKUS_DATASOURCE_USERNAME: prse
       QUARKUS_DATASOURCE_PASSWORD: prse
       QUARKUS_HIBERNATE_ORM_DATABASE_GENERATION: drop-and-create
+      TZ: Europe/Vienna
     depends_on:
       postgres:
         condition: service_healthy
