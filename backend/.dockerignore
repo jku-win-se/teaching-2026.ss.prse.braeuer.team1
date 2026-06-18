@@ -1,5 +1,8 @@
-*
-!target/*-runner
-!target/*-runner.jar
-!target/lib/*
-!target/quarkus-app/*
+# The image is built straight from source via a multi-stage build, so the build
+# context must contain pom.xml, mvnw, .mvn/ and src/. Only exclude local build
+# output and editor/OS noise so the context stays small and reproducible.
+target/
+.idea/
+*.iml
+.vscode/
+.DS_Store
