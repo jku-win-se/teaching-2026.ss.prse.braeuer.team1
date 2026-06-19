@@ -7,8 +7,6 @@
 
 Eine Heimautomatisierungsanwendung zur zentralen Verwaltung von Smart-Home-Geräten, Automatisierungsregeln, Zeitplänen und Energieverbrauch -- entwickelt im Rahmen des Software Engineering Praktikums (SS 2026) an der JKU Linz.
 
-
-
 ## Team
 
 | Mitglied           | Schwerpunkt                                   |
@@ -17,9 +15,59 @@ Eine Heimautomatisierungsanwendung zur zentralen Verwaltung von Smart-Home-Gerä
 | **Benjamin Besic** | Frontend-Entwicklung, React/UI, Docker-Setup  |
 | **Felix Rieser**   | WebSocket, IoT-Integration, Simulation, Tests, Code-Qualität |
 
+## Umgesetzte Anforderungen
 
+- [Anforderungsdokument](docs/requirements/requirements_smarthome_de.md)
 
-## Systemarchitektur
+Alle 21 funktionalen und alle 6 nicht-funktionalen Anforderungen wurden vollständig umgesetzt.
+
+### Funktionale Anforderungen
+
+| ID | Anforderung | Verantwortlich | Aufwand (h) |
+| :---- | :---- | :---- | :---- |
+| FR-01 | Benutzerregistrierung | Armin | 3 |
+| FR-02 | Benutzer-Login / Logout | Armin | 2 |
+| FR-03 | Rollenverwaltung (Owner / Member) | Armin | 4 |
+| FR-04 | Geräteverwaltung (Anlegen, Typen) | Armin | 5 |
+| FR-05 | Gerät umbenennen | Armin | 1 |
+| FR-06 | Gerät zentral schalten | Armin | 3 |
+| FR-07 | Echtzeit-Gerätezustand per WebSocket | Felix | 6 |
+| FR-08 | Lückenloses Aktivitätslog | Armin | 3 |
+| FR-09 | Raumverwaltung | Armin | 3 |
+| FR-10 | Regeln anlegen (WENN … DANN …) | Armin | 5 |
+| FR-11 | Regeln aktivieren / deaktivieren | Armin | 2 |
+| FR-12 | Regel-Engine: automatische Ausführung | Felix | 6 |
+| FR-13 | Mitglieder einladen, Sichtbarkeitsschutz | Armin | 4 |
+| FR-14 | Energie-Dashboard (Verbrauch je Gerät) | Benjamin | 6 |
+| FR-15 | Konflikt-Erkennung bei Regeln/Zeitplänen | Felix | 5 |
+| FR-16 | CSV-Export der Energiedaten | Benjamin | 2 |
+| FR-17 | Szenen (Gerätegruppen-Profile) | Benjamin | 4 |
+| FR-18 | IoT-Schicht (MQTT-Anbindung vorbereitet) | Felix | 6 |
+| FR-19 | Tagessimulation im Zeitraffer | Felix | 5 |
+| FR-20 | Zeitplan-Verwaltung | Armin | 4 |
+| FR-21 | Urlaubsmodus | Benjamin | 4 |
+
+### Nicht-funktionale Anforderungen
+
+| ID | Anforderung | Ergebnis |
+| :---- | :---- | :---- |
+| NFR-01 | Antwortzeit \< 2 Sekunden | Erfüllt – alle REST-Endpunkte antworten typisch \< 200 ms |
+| NFR-02 | Passwörter nie im Klartext | Erfüllt – bcrypt-Hash via `org.mindrot.jbcrypt` |
+| NFR-03 | Testabdeckung ≥ 75 % | Erfüllt – JaCoCo misst 94,2 % |
+| NFR-04 | CI bricht bei PMD-Verstößen ab | Erfüllt – 0 kritische Befunde, Build-Gate aktiv |
+| NFR-05 | Rollen-basierter Zugriff | Erfüllt – Owner/Member-Trennung auf API-Ebene |
+| NFR-06 | JavaDoc für Kern & API | Erfüllt – alle öffentlichen Klassen und Methoden dokumentiert |
+
+## Überblick über die Applikation aus Benutzersicht inkl. Installationsanleitung
+
+Die Benutzerdokumentation mit Szenarien und Funktionsbeschreibungen, sowie die vollständige Anleitung zum Starten der Anwendung (Docker Compose und lokale Entwicklung)
+steht im Benutzerhandbuch:
+
+- [Benutzerdokumentation](docs/user-handbook.md)
+
+## Überblick über die Applikation aus Entwicklersicht
+
+### Systemarchitektur
 
 Das Projekt folgt einer klassischen **Three-Tier-Architektur**, vollständig containerisiert mit Docker Compose:
 
@@ -38,22 +86,9 @@ Das Projekt folgt einer klassischen **Three-Tier-Architektur**, vollständig con
 | **Datenbank**| PostgreSQL 17                        | Persistenz aller Domänedaten mit automatischem Schema-Management             |
 | **Infrastruktur**    | Docker Compose, nginx                | Multi-Container-Orchestrierung mit Health-Checks und Reverse-Proxy           |
 
-
-
-## Startanleitung
-
-Die Benutzerdokumentation mit Szenarien und Funktionsbeschreibungen, sowie die vollständige Anleitung zum Starten der Anwendung (Docker Compose und lokale Entwicklung)
-steht im Benutzerhandbuch:
-
-- [Benutzerdokumentation](docs/user-handbook.md)
-
-
-## Überblick über die Applikation aus Entwicklersicht
-
 - [Systemdokumentation](docs/system-architecture.md)
 
-
-## Domänenmodell
+### Domänenmodell
 
 - Datei: [Domänenmodell](docs/domain-model.md)
 - Inhalt:
@@ -62,7 +97,8 @@ steht im Benutzerhandbuch:
 	über DTOs, Entitäten, Mapper, Repositories, Ressourcen, Services, IoT und WebSocket.
 
 
-## Generierte API-Dokumentation
+
+## JavaDoc für wichtige Klassen, Interfaces und Methoden
 
 JavaDoc wird bei Bedarf lokal generiert (nicht ins Repo eingecheckt):
 
@@ -74,9 +110,6 @@ mvn javadoc:javadoc
 Output: `backend/target/site/apidocs/index.html` im Browser öffnen.
 
 
-## Dokumentation der Anforderungen
-
-- [Anforderungsdokument](docs/requirements/requirements_smarthome_de.md)
 
 
 
