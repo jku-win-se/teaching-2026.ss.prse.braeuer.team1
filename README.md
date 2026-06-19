@@ -25,27 +25,27 @@ Alle 21 funktionalen und alle 6 nicht-funktionalen Anforderungen wurden vollstä
 
 | ID | Anforderung | Verantwortlich | Aufwand (h) |
 | :---- | :---- | :---- | :---- |
-| FR-01 | Benutzerregistrierung | Armin | 3 |
-| FR-02 | Benutzer-Login / Logout | Armin | 2 |
-| FR-03 | Rollenverwaltung (Owner / Member) | Armin | 4 |
-| FR-04 | Geräteverwaltung (Anlegen, Typen) | Armin | 5 |
-| FR-05 | Gerät umbenennen | Armin | 1 |
-| FR-06 | Gerät zentral schalten | Armin | 3 |
-| FR-07 | Echtzeit-Gerätezustand per WebSocket | Felix | 6 |
-| FR-08 | Lückenloses Aktivitätslog | Armin | 3 |
-| FR-09 | Raumverwaltung | Armin | 3 |
-| FR-10 | Regeln anlegen (WENN … DANN …) | Armin | 5 |
-| FR-11 | Regeln aktivieren / deaktivieren | Armin | 2 |
-| FR-12 | Regel-Engine: automatische Ausführung | Felix | 6 |
-| FR-13 | Mitglieder einladen, Sichtbarkeitsschutz | Armin | 4 |
-| FR-14 | Energie-Dashboard (Verbrauch je Gerät) | Benjamin | 6 |
-| FR-15 | Konflikt-Erkennung bei Regeln/Zeitplänen | Felix | 5 |
-| FR-16 | CSV-Export der Energiedaten | Benjamin | 2 |
-| FR-17 | Szenen (Gerätegruppen-Profile) | Benjamin | 4 |
-| FR-18 | IoT-Schicht (MQTT-Anbindung vorbereitet) | Felix | 6 |
-| FR-19 | Tagessimulation im Zeitraffer | Felix | 5 |
-| FR-20 | Zeitplan-Verwaltung | Armin | 4 |
-| FR-21 | Urlaubsmodus | Benjamin | 4 |
+| FR-01 | Benutzerregistrierung |  |  |
+| FR-02 | Benutzer-Login / Logout |  |  |
+| FR-03 | Rollenverwaltung (Owner / Member) |  |  |
+| FR-04 | Geräteverwaltung (Anlegen, Typen) |  |  |
+| FR-05 | Gerät umbenennen |  |  |
+| FR-06 | Gerät zentral schalten |  |  |
+| FR-07 | Echtzeit-Gerätezustand per WebSocket |  |  |
+| FR-08 | Lückenloses Aktivitätslog |  |  |
+| FR-09 | Raumverwaltung |  |  |
+| FR-10 | Regeln anlegen (WENN … DANN …) |  |  |
+| FR-11 | Regeln aktivieren / deaktivieren |  |  |
+| FR-12 | Regel-Engine: automatische Ausführung |  |  |
+| FR-13 | Mitglieder einladen, Sichtbarkeitsschutz |  |  |
+| FR-14 | Energie-Dashboard (Verbrauch je Gerät) |  |  |
+| FR-15 | Konflikt-Erkennung bei Regeln/Zeitplänen |  |  |
+| FR-16 | CSV-Export der Energiedaten |  |  |
+| FR-17 | Szenen (Gerätegruppen-Profile) |  |  |
+| FR-18 | IoT-Schicht (MQTT-Anbindung vorbereitet) |  |  |
+| FR-19 | Tagessimulation im Zeitraffer |  |  |
+| FR-20 | Zeitplan-Verwaltung |  |  |
+| FR-21 | Urlaubsmodus |  |  |
 
 ### Nicht-funktionale Anforderungen
 
