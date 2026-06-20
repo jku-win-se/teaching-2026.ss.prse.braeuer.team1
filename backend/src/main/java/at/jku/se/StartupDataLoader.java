@@ -22,19 +22,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.jboss.logging.Logger;
 
-/**
- * Loads realistic sample data on every application startup.
- * Only runs when the database is empty (no users exist yet).
- * Because {@code quarkus.hibernate-orm.database.generation=drop-and-create} is active,
- * the schema is always fresh and this loader always populates it.
- *
- * <p>Test credentials:
- * <ul>
- *   <li>Owner: alice@example.com / password123</li>
- *   <li>Member: bob@example.com / password123</li>
- * </ul>
- */
-@ApplicationScoped
+// StartupDataLoader is disabled — no test data will be inserted on startup.
+// To re-enable, uncomment @ApplicationScoped and restore @Observes below.
+
+// @ApplicationScoped
 public class StartupDataLoader {
 
     private static final Logger LOG = Logger.getLogger(StartupDataLoader.class);
@@ -45,7 +36,7 @@ public class StartupDataLoader {
         }
 
     @Transactional
-    void onStart(@Observes StartupEvent ev) {
+    void onStart(/* @Observes */ StartupEvent ev) {
         if (User.count() > 0) {
             LOG.info("Database already has data — skipping seed.");
             return;
