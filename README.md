@@ -51,12 +51,12 @@ Alle 21 funktionalen und alle 6 nicht-funktionalen Anforderungen wurden vollstä
 
 | ID | Anforderung | Ergebnis |
 | :---- | :---- | :---- |
-| NFR-01 | Antwortzeit \< 2 Sekunden | Erfüllt – alle REST-Endpunkte antworten typisch \< 200 ms |
-| NFR-02 | Passwörter nie im Klartext | Erfüllt – bcrypt-Hash via `org.mindrot.jbcrypt` |
-| NFR-03 | Testabdeckung ≥ 75 % | Erfüllt – JaCoCo misst 94,2 % |
-| NFR-04 | CI bricht bei PMD-Verstößen ab | Erfüllt – 0 kritische Befunde, Build-Gate aktiv |
-| NFR-05 | Rollen-basierter Zugriff | Erfüllt – Owner/Member-Trennung auf API-Ebene |
-| NFR-06 | JavaDoc für Kern & API | Erfüllt – alle öffentlichen Klassen und Methoden dokumentiert |
+| NFR-01 | Antwortzeit \< 2 Sekunden | ✅ Umgesetzt – alle REST-Endpunkte antworten typisch \< 200 ms |
+| NFR-02 | Passwörter nie im Klartext | ✅ Umgesetzt – bcrypt-Hash via `org.mindrot.jbcrypt` |
+| NFR-03 | Testabdeckung ≥ 75 % | ✅ Umgesetzt – JaCoCo misst 94,2 % |
+| NFR-04 | CI bricht bei PMD-Verstößen ab | ✅ Umgesetzt – 0 kritische Befunde, Build-Gate aktiv |
+| NFR-05 | Rollen-basierter Zugriff | ✅ Umgesetzt – Owner/Member-Trennung auf API-Ebene |
+| NFR-06 | JavaDoc für Kern & API | ✅ Umgesetzt – alle öffentlichen Klassen und Methoden dokumentiert |
 
 ## Überblick über die Applikation aus Benutzersicht inkl. Installationsanleitung
 
