@@ -23,29 +23,29 @@ Alle 21 funktionalen und alle 6 nicht-funktionalen Anforderungen wurden vollstä
 
 ### Funktionale Anforderungen
 
-| ID | Anforderung | Verantwortlich | Aufwand (h) |
-| :---- | :---- | :---- | :---- |
-| FR-01 | Benutzerregistrierung |  |  |
-| FR-02 | Benutzer-Login / Logout |  |  |
-| FR-03 | Rollenverwaltung (Owner / Member) |  |  |
-| FR-04 | Geräteverwaltung (Anlegen, Typen) |  |  |
-| FR-05 | Gerät umbenennen |  |  |
-| FR-06 | Gerät zentral schalten |  |  |
-| FR-07 | Echtzeit-Gerätezustand per WebSocket |  |  |
-| FR-08 | Lückenloses Aktivitätslog |  |  |
-| FR-09 | Raumverwaltung |  |  |
-| FR-10 | Regeln anlegen (WENN … DANN …) |  |  |
-| FR-11 | Regeln aktivieren / deaktivieren |  |  |
-| FR-12 | Regel-Engine: automatische Ausführung |  |  |
-| FR-13 | Mitglieder einladen, Sichtbarkeitsschutz |  |  |
-| FR-14 | Energie-Dashboard (Verbrauch je Gerät) |  |  |
-| FR-15 | Konflikt-Erkennung bei Regeln/Zeitplänen |  |  |
-| FR-16 | CSV-Export der Energiedaten |  |  |
-| FR-17 | Szenen (Gerätegruppen-Profile) |  |  |
-| FR-18 | IoT-Schicht (MQTT-Anbindung vorbereitet) |  |  |
-| FR-19 | Tagessimulation im Zeitraffer |  |  |
-| FR-20 | Zeitplan-Verwaltung |  |  |
-| FR-21 | Urlaubsmodus |  |  |
+| ID | Anforderung | Status |
+| :---- | :---- | :---- |
+| FR-01 | Benutzerregistrierung | ✅ Umgesetzt |
+| FR-02 | Benutzer-Login / Logout | ✅ Umgesetzt |
+| FR-03 | Rollenverwaltung (Owner / Member) | ✅ Umgesetzt |
+| FR-04 | Geräteverwaltung (Anlegen, Typen) | ✅ Umgesetzt |
+| FR-05 | Gerät umbenennen | ✅ Umgesetzt |
+| FR-06 | Gerät zentral schalten | ✅ Umgesetzt |
+| FR-07 | Echtzeit-Gerätezustand per WebSocket | ✅ Umgesetzt |
+| FR-08 | Lückenloses Aktivitätslog | ✅ Umgesetzt |
+| FR-09 | Raumverwaltung | ✅ Umgesetzt |
+| FR-10 | Regeln anlegen (WENN … DANN …) | ✅ Umgesetzt |
+| FR-11 | Regeln aktivieren / deaktivieren | ✅ Umgesetzt |
+| FR-12 | Regel-Engine: automatische Ausführung | ✅ Umgesetzt |
+| FR-13 | Mitglieder einladen, Sichtbarkeitsschutz | ✅ Umgesetzt |
+| FR-14 | Energie-Dashboard (Verbrauch je Gerät) | ✅ Umgesetzt |
+| FR-15 | Konflikt-Erkennung bei Regeln/Zeitplänen | ✅ Umgesetzt |
+| FR-16 | CSV-Export der Energiedaten | ✅ Umgesetzt |
+| FR-17 | Szenen (Gerätegruppen-Profile) | ✅ Umgesetzt |
+| FR-18 | IoT-Schicht (MQTT-Anbindung vorbereitet) | ✅ Umgesetzt |
+| FR-19 | Tagessimulation im Zeitraffer | ✅ Umgesetzt |
+| FR-20 | Zeitplan-Verwaltung | ✅ Umgesetzt |
+| FR-21 | Urlaubsmodus | ✅ Umgesetzt |
 
 ### Nicht-funktionale Anforderungen
 
