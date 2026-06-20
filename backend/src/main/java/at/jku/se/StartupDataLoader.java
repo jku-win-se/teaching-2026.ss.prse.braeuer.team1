@@ -22,10 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.jboss.logging.Logger;
 
-// StartupDataLoader is disabled — no test data will be inserted on startup.
-// To re-enable, uncomment @ApplicationScoped and restore @Observes below.
-
-// @ApplicationScoped
+@ApplicationScoped
 public class StartupDataLoader {
 
     private static final Logger LOG = Logger.getLogger(StartupDataLoader.class);
@@ -36,7 +33,7 @@ public class StartupDataLoader {
         }
 
     @Transactional
-    void onStart(/* @Observes */ StartupEvent ev) {
+    void onStart(@Observes StartupEvent ev) {
         if (User.count() > 0) {
             LOG.info("Database already has data — skipping seed.");
             return;
