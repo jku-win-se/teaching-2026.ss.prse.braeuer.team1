@@ -60,7 +60,9 @@ Alle 21 funktionalen und alle 6 nicht-funktionalen Anforderungen wurden vollstä
 
 ## Überblick über die Applikation aus Benutzersicht inkl. Installationsanleitung
 
-Die Benutzerdokumentation mit Szenarien und Funktionsbeschreibungen, sowie die vollständige Anleitung zum Starten der Anwendung (Docker Compose und lokale Entwicklung)
+Um die Applikation lokal auf Ihrem Rechner in Docker-Containern zu starten, stellen Sie sicher, dass Docker im Hintergrund läuft. Führen Sie anschließend einfach – je nach Betriebssystem (Windows, macOS oder Linux) – die entsprechende start-app.bat- oder start-app.sh-Datei per Doppelklick aus.
+
+Die Benutzerdokumentation mit Szenarien und Funktionsbeschreibungen, sowie die vollständige Anleitung zum lokalen Starten der Anwendung (Docker Compose und lokale Entwicklung)
 steht im Benutzerhandbuch:
 
 - [Benutzerdokumentation](docs/user-handbook.md)
